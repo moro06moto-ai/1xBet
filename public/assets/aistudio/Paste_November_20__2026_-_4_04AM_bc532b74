@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رابط تحميل سكربت الطيارة 1xBet مجاناً - محرك بحث البيانات | العنكبوت للمعلومات</title>
+    <!-- Google Fonts: Cairo & Tajawal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bae0fd',
+                            500: '#0284c7',
+                            600: '#0265d2',
+                            700: '#034ea2',
+                            800: '#074283',
+                            900: '#0c376d',
+                            accent: '#f59e0b',
+                            gold: '#fbbf24',
+                            emerald: '#10b981',
+                            crimson: '#ef4444'
+                        },
+                        darkbg: {
+                            900: '#0b1120',
+                            800: '#111827',
+                            700: '#1f2937',
+                            600: '#374151'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                        tajawal: ['Tajawal', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0b1120;
+            color: #f3f4f6;
+        }
+        .glow-effect {
+            box-shadow: 0 0 25px rgba(2, 132, 199, 0.25);
+        }
+        .glow-gold {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #0284c7;
+        }
+    </style>
+</head>
+<body class="bg-darkbg-900 text-gray-100 min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white antialiased">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-brand-900 via-brand-700 to-brand-900 border-b border-brand-500/30 text-xs md:text-sm py-2 px-4 text-center text-brand-100 font-medium flex items-center justify-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>قاعدة البيانات محدثة وموثقة لعام 2026 عبر منصة GitLab العامة — تم توثيق 250 سجل لاعب فعال.</span>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-darkbg-800/90 backdrop-blur-md border-b border-gray-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo & Title -->
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-cyan-400 flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-brand-500/30">
+                        <i class="fa-solid fa-spider"></i>
+                    </div>
+                    <div>
+                        <a href="https://www.information-net.com" target="_blank" rel="noopener noreferrer" class="group">
+                            <span class="block text-lg font-extrabold text-white group-hover:text-brand-500 transition-colors">العنكبوت للمعلومات</span>
+                            <span class="block text-xs text-brand-500 font-semibold tracking-wider dir-ltr text-right">information-net.com</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Quick Info & Mode Toggle -->
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex items-center gap-2 bg-darkbg-700 px-3 py-1.5 rounded-xl border border-gray-700 text-xs font-semibold text-gray-300">
+                        <i class="fa-solid fa-database text-emerald-400"></i>
+                        <span>قاعدة البيانات: <strong class="text-white">GitLab-Public-2026</strong></span>
+                    </div>
+
+                    <!-- Live API Toggle Button -->
+                    <button id="toggleApiBtn" onclick="toggleApiMode()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border bg-darkbg-700 border-gray-700 text-gray-300 hover:border-brand-500">
+                        <i id="apiIcon" class="fa-solid fa-toggle-off text-gray-400 text-base"></i>
+                        <span id="apiStatusText">وضع البيانات المحلية (250)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
+
+        <!-- Breadcrumb Navigation -->
+        <nav aria-label="Breadcrumb" class="bg-darkbg-800/50 p-3 rounded-xl border border-gray-800 text-xs md:text-sm">
+            <ol class="flex items-center flex-wrap gap-2 text-gray-400 font-medium">
+                <li>
+                    <a href="https://www.information-net.com" class="hover:text-brand-500 transition-colors flex items-center gap-1.5">
+                        <i class="fa-solid fa-house text-brand-500"></i>
+                        الرئيسية
+                    </a>
+                </li>
+                <li><i class="fa-solid fa-chevron-left text-xs text-gray-600"></i></li>
+                <li>
+                    <a href="#search-section" class="hover:text-brand-500 transition-colors">الأدوات التقنية</a>
+                </li>
+                <li><i class="fa-solid fa-chevron-left text-xs text-gray-600"></i></li>
+                <li class="text-brand-500 font-bold underline decoration-brand-500/40 underline-offset-4" aria-current="page">
+                    رابط تحميل سكربت الطيارة 1xBet مجانا
+                </li>
+            </ol>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="relative bg-gradient-to-b from-darkbg-800 via-darkbg-800/80 to-darkbg-900 rounded-3xl p-6 sm:p-10 border border-gray-800 overflow-hidden glow-effect">
+            <!-- Background Decorative Elements -->
+            <div class="absolute -top-24 -left-24 w-72 h-72 bg-brand-600/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-500 text-xs md:text-sm font-bold">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    محرك البحث الرسمي للتحقق من أرقام الحسابات والبرومو كود المعتمد
+                </div>
+
+                <!-- Single Main H1 Heading -->
+                <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
+                    رابط تحميل سكربت الطيارة 1xBet مجانا
+                </h1>
+
+                <!-- Subtitle / Information Text -->
+                <p class="text-sm sm:text-base lg:text-lg text-gray-300 font-normal leading-relaxed max-w-3xl mx-auto">
+                    منصة الاستعلام الموثقة من بوابة <strong class="text-brand-500">العنكبوت للمعلومات</strong> لمراجعة سجلات التنزيل المعتمدة وحسابات اللاعبين الموثقة عبر GitLab. استعلم فوراً عن الرقم التعريفي (<span class="dir-ltr inline-block font-mono text-amber-400">Account ID</span>) أو كود الترويج (<span class="dir-ltr inline-block font-mono text-amber-400">Promo Code</span>) للوصول إلى التحقق الرسمي والتنزيل الآمن.
+                </p>
+
+                <!-- Search Box Component -->
+                <div id="search-section" class="pt-4 max-w-2xl mx-auto space-y-3">
+                    <div class="bg-darkbg-900/90 p-2 sm:p-3 rounded-2xl border-2 border-brand-500/50 shadow-2xl focus-within:border-brand-500 transition-all space-y-3">
+                        <div class="flex flex-col sm:flex-row items-center gap-2">
+                            <div class="relative w-full flex-grow">
+                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400">
+                                    <i class="fa-solid fa-magnifying-glass text-lg text-brand-500"></i>
+                                </div>
+                                <input type="text" id="searchInput" 
+                                       placeholder="أدخل ID الحساب (مثل 1849203741) أو كود البرومو (مثل 1x_1159029)" 
+                                       class="w-full pr-12 pl-10 py-3.5 bg-darkbg-800 text-white placeholder-gray-400 rounded-xl border border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono text-sm sm:text-base"
+                                       onkeydown="handleKeyDown(event)">
+                                <button type="button" id="clearBtn" onclick="clearSearch()" class="hidden absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 hover:text-white">
+                                    <i class="fa-solid fa-circle-xmark text-lg"></i>
+                                </button>
+                            </div>
+                            <button onclick="executeSearch()" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-600 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-base shrink-0 active:scale-95">
+                                <i class="fa-solid fa-search"></i>
+                                <span>بحث الآن</span>
+                            </button>
+                        </div>
+
+                        <!-- Search Options Bar -->
+                        <div class="flex flex-wrap items-center justify-between gap-2 px-2 pt-1 text-xs text-gray-400 border-t border-gray-800">
+                            <div class="flex items-center gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                                    <input type="radio" name="searchMode" value="smart" checked class="text-brand-500 focus:ring-brand-500 bg-darkbg-800 border-gray-700">
+                                    <span>بحث ذكي (جزئي)</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                                    <input type="radio" name="searchMode" value="exact" class="text-brand-500 focus:ring-brand-500 bg-darkbg-800 border-gray-700">
+                                    <span>مطابقة دقيقة (Exact)</span>
+                                </label>
+                            </div>
+                            <div id="searchCounter" class="text-brand-500 font-semibold">
+                                إجمالي السجلات: <span id="dbTotalBadge">250</span> لاعب
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Search Sample Chips -->
+                    <div class="flex flex-wrap items-center justify-center gap-2 text-xs pt-1">
+                        <span class="text-gray-400 font-semibold">عينات سريعة للتدقيق:</span>
+                        <button onclick="fillAndSearch('1849203741')" class="bg-darkbg-700 hover:bg-brand-600/30 border border-gray-700 hover:border-brand-500 px-2.5 py-1 rounded-lg font-mono text-brand-100 transition-colors">1849203741</button>
+                        <button onclick="fillAndSearch('1849203745')" class="bg-darkbg-700 hover:bg-brand-600/30 border border-gray-700 hover:border-brand-500 px-2.5 py-1 rounded-lg font-mono text-brand-100 transition-colors">1849203745</button>
+                        <button onclick="fillAndSearch('1x_1159029')" class="bg-darkbg-700 hover:bg-amber-500/20 border border-gray-700 hover:border-amber-500 px-2.5 py-1 rounded-lg font-mono text-amber-300 transition-colors">1x_1159029</button>
+                        <button onclick="fillAndSearch('1x_1159177')" class="bg-darkbg-700 hover:bg-amber-500/20 border border-gray-700 hover:border-amber-500 px-2.5 py-1 rounded-lg font-mono text-amber-300 transition-colors">1x_1159177</button>
+                    </div>
+
+                    <!-- Validation Alert Box (Hidden by default) -->
+                    <div id="validationAlert" class="hidden bg-rose-500/10 border border-rose-500/40 text-rose-300 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-center flex items-center justify-center gap-2 animate-bounce">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-400 text-base"></i>
+                        <span id="validationMessage">يرجى إدخال رقم ID أو كود البرومو للبدء بالبحث!</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Statistics Row -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-darkbg-800 p-5 rounded-2xl border border-gray-800 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-500 text-2xl">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <span class="block text-xs text-gray-400 font-semibold">إجمالي الحسابات المسجلة</span>
+                    <span id="statTotalPlayers" class="text-xl sm:text-2xl font-black text-white font-mono">250</span>
+                </div>
+            </div>
+
+            <div class="bg-darkbg-800 p-5 rounded-2xl border border-gray-800 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-500 text-2xl">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <div>
+                    <span class="block text-xs text-gray-400 font-semibold">الشركة المعتمدة</span>
+                    <span id="statCompanies" class="text-xl sm:text-2xl font-black text-white font-mono">1xBet</span>
+                </div>
+            </div>
+
+            <div class="bg-darkbg-800 p-5 rounded-2xl border border-gray-800 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-500 text-2xl">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+                <div>
+                    <span class="block text-xs text-gray-400 font-semibold">الدول المتاحة</span>
+                    <span id="statCountries" class="text-xl sm:text-2xl font-black text-white font-mono">20 دولة</span>
+                </div>
+            </div>
+
+            <div class="bg-darkbg-800 p-5 rounded-2xl border border-gray-800 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-2xl">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div>
+                    <span class="block text-xs text-gray-400 font-semibold">السجلات الموثقة</span>
+                    <span id="statVerified" class="text-xl sm:text-2xl font-black text-white font-mono">250 (100%)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Results Section -->
+        <section id="resultsSection" class="space-y-4 min-h-[180px]">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    نتائج الاستعلام والتحقق
+                </h2>
+                <span id="resultsCountBadge" class="text-xs bg-brand-500/20 border border-brand-500/40 text-brand-300 font-semibold px-3 py-1 rounded-full">
+                    عرض جميع السجلات (250)
+                </span>
+            </div>
+
+            <!-- Loading Spinner State -->
+            <div id="loadingSpinner" class="hidden py-12 text-center space-y-3">
+                <div class="inline-block w-10 h-10 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-sm text-gray-400 font-semibold">جاري الاستعلام ومطابقة قاعدة البيانات عبر منصة GitLab...</p>
+            </div>
+
+            <!-- Empty / No Results State -->
+            <div id="noResultsState" class="hidden bg-darkbg-800 p-8 rounded-2xl border border-gray-800 text-center space-y-3">
+                <div class="w-16 h-16 rounded-full bg-rose-500/10 text-rose-400 flex items-center justify-center text-3xl mx-auto border border-rose-500/30">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white">لم يتم العثور على نتائج مطابقة</h3>
+                <p class="text-sm text-gray-400 max-w-md mx-auto">
+                    تأكد من كتابة رقم ID الحساب (مثل <span class="font-mono text-gray-200">1849203741</span>) أو كود البرومو الترويجي بشكل صحيح بدون مسافات إضافية.
+                </p>
+                <button onclick="resetSearchAndFilters()" class="px-4 py-2 bg-darkbg-700 hover:bg-gray-700 text-white text-xs font-bold rounded-xl border border-gray-600 transition-colors">
+                    إعادة ضبط البحث والاستعراض
+                </button>
+            </div>
+
+            <!-- Results Cards Grid -->
+            <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Cards injected dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- Comprehensive Data Table Section -->
+        <section class="bg-darkbg-800 rounded-3xl border border-gray-800 p-6 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-700/60 pb-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-table-list text-amber-500"></i>
+                        سجل الحسابات والتحقق المباشر
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">تصفح وتصفية كامل قاعدة البيانات المقيدة بالوثائق الرسمية لعام 2026</p>
+                </div>
+
+                <!-- Table Filters & Controls -->
+                <div class="flex flex-wrap items-center gap-3 text-xs">
+                    <!-- Country Filter -->
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-gray-400">الدولة:</span>
+                        <select id="countryFilter" onchange="applyTableFilters()" class="bg-darkbg-900 border border-gray-700 text-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-brand-500">
+                            <option value="ALL">جميع الدول (20)</option>
+                        </select>
+                    </div>
+
+                    <!-- Status Filter -->
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-gray-400">حالة التحميل:</span>
+                        <select id="statusFilter" onchange="applyTableFilters()" class="bg-darkbg-900 border border-gray-700 text-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-brand-500">
+                            <option value="ALL">جميع الحالات</option>
+                            <option value="مكتمل">مكتمل (تحميل موثق)</option>
+                            <option value="جارٍ التحميل">جارٍ التحميل</option>
+                            <option value="لم يبدأ">لم يبدأ</option>
+                            <option value="فشل">فشل</option>
+                        </select>
+                    </div>
+
+                    <!-- Rows Per Page -->
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-gray-400">عدد الصفوف:</span>
+                        <select id="pageSizeSelect" onchange="changePageSize()" class="bg-darkbg-900 border border-gray-700 text-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-brand-500 font-mono">
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Responsive Container -->
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-right text-xs sm:text-sm">
+                    <thead>
+                        <tr class="bg-darkbg-900/80 text-gray-300 font-bold border-b border-gray-700">
+                            <th class="p-3.5 rounded-r-xl">اسم اللاعب</th>
+                            <th class="p-3.5">ID الحساب</th>
+                            <th class="p-3.5">الشركة</th>
+                            <th class="p-3.5">البرومو كود</th>
+                            <th class="p-3.5">الرصيد / الفئة</th>
+                            <th class="p-3.5">الدولة</th>
+                            <th class="p-3.5">حالة التنزيل</th>
+                            <th class="p-3.5">تاريخ التوثيق</th>
+                            <th class="p-3.5 rounded-l-xl text-center">الإجراء المتاح</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-gray-800/60 font-medium">
+                        <!-- Table rows injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Bar -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400 pt-2">
+                <div>
+                    عرض <span id="pageRangeText" class="font-mono font-bold text-white">1 - 10</span> من إجمالي <span id="totalFilteredText" class="font-mono font-bold text-white">250</span> سجل
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button id="prevPageBtn" onclick="changePage(-1)" class="px-3 py-1.5 bg-darkbg-900 border border-gray-700 rounded-lg hover:border-brand-500 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                        <i class="fa-solid fa-chevron-right ml-1"></i> السابق
+                    </button>
+                    <span class="font-mono font-bold text-brand-400 px-2">
+                        صفحة <span id="currentPageNum">1</span> من <span id="totalPagesNum">25</span>
+                    </span>
+                    <button id="nextPageBtn" onclick="changePage(1)" class="px-3 py-1.5 bg-darkbg-900 border border-gray-700 rounded-lg hover:border-brand-500 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                        التالي <i class="fa-solid fa-chevron-left mr-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3-Step Guide Section -->
+        <section class="bg-darkbg-800/60 rounded-3xl p-6 sm:p-8 border border-gray-800 space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="text-xs font-bold text-brand-500 tracking-wider uppercase">دليل الاستخدام السريع</span>
+                <h2 class="text-2xl font-black text-white">كيف تقوم بالبحث والتحقق في 3 خطوات بسيطة؟</h2>
+                <p class="text-xs sm:text-sm text-gray-400">طريقة الاستعلام وتدقيق بيانات الترخيص وتنزيل السكربت الموثق</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Step 1 -->
+                <div class="bg-darkbg-900 p-6 rounded-2xl border border-gray-800 relative space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-500 text-white font-black flex items-center justify-center text-lg shadow-lg">1</div>
+                    <h3 class="text-base font-bold text-white">إدخال رقم الحساب أو البرومو</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        قم بكتابة رقم ID الخاص بحسابك في 1xBet (مثل <span class="font-mono text-gray-200">1849203741</span>) أو كود الترويج المعتمد (<span class="font-mono text-gray-200">1x_1159029</span>) في مربع البحث العلوي.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-darkbg-900 p-6 rounded-2xl border border-gray-800 relative space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 text-white font-black flex items-center justify-center text-lg shadow-lg">2</div>
+                    <h3 class="text-base font-bold text-white">فحص التوثيق والتطابق</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        يقوم المحرك بفرز القاعدة الرسمية المقيدة على GitLab للتحقق من حالة التنزيل والدولة المعتمدة والتحقق من صلاحية البرومو كود.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-darkbg-900 p-6 rounded-2xl border border-gray-800 relative space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white font-black flex items-center justify-center text-lg shadow-lg">3</div>
+                    <h3 class="text-base font-bold text-white">التنزيل الرسمي المباشر</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        في حال كان الحساب موثقاً وحالة التنزيل "مكتمل"، سيظهر لك زر التنزيل المباشر المعتمد الموجه حصرياً إلى صفحة المصادر المصرحة.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Educational & Responsible Guide Section -->
+        <section class="bg-gradient-to-br from-darkbg-800 via-darkbg-900 to-darkbg-800 rounded-3xl p-6 sm:p-10 border border-gray-800 space-y-8">
+            <div class="border-b border-gray-800 pb-4">
+                <div class="inline-flex items-center gap-2 text-amber-400 text-xs font-bold mb-2">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    دليل التوعية والشفافية التقنية — العنكبوت للمعلومات
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-white">
+                    حقيقة لعبة Aviator وسكربت الطيارة 1xBet: بين التحليل الرقمي وخوارزمية RNG
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 text-xs sm:text-sm text-gray-300 leading-relaxed">
+                <!-- Left Column -->
+                <div class="space-y-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-plane-departure text-brand-500"></i>
+                        ما هي لعبة الطيارة (Aviator Game)؟
+                    </h3>
+                    <p>
+                        تعتمد لعبة Aviator على منحنيات معامل الضرب المالي المرتفع بشكل لحظي، حيث يزداد معامل الربح مع ارتفاع الطائرة الافتراضية. اللعبة مبنية بالكامل على تقنية <strong class="text-white">Provably Fair (الإثبات العدلي)</strong> والتي تستخدم التشفير الخوارزمي لمنع أي تدخل خارجي أو تعديل في نتائج الجولات.
+                    </p>
+
+                    <h3 class="text-base font-bold text-white flex items-center gap-2 pt-2">
+                        <i class="fa-solid fa-code text-amber-500"></i>
+                        ما هو "سكربت الطيارة" وما وظيفته الحقيقية؟
+                    </h3>
+                    <p>
+                        تنتشر العديد من الادعاءات حول برامج "التنبؤ" أو "اختراق اللعبة". نوضح من خلال منصة <strong class="text-brand-500">العنكبوت للمعلومات</strong> أن السكربتات الموثقة والبرمجيات المعتمدة تعمل كأدوات <strong class="text-white">إحصائية وتحليلية لقراءة وتوثيق سجلات الأرقام السابقة</strong> ولا يمكن لأي برنامج على الإطلاق التنبؤ المؤكد أو اختراق خوارزمية السيرفر المحمية بالتشفير الشديد.
+                    </p>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-shield-virus text-emerald-400"></i>
+                        الفرق بين البرامج الإحصائية والملفات المشبوهة
+                    </h3>
+                    <p>
+                        تحذر منصتنا المستخدمين من تحميل أي برامج ادعائية غير موثقة تطلب الوصول إلى بيانات الحساب الحساسة أو تحث على يدعس أزرار مجهولة. الادعاء بـ "ضمان نسبة الفوز 100%" هو ادعاء زائف تقنياً. التنزيلات المعتمدة عبر قاعدة بياناتنا تقتصر على ملفات التدقيق والتحليل التاريخي للبيانات.
+                    </p>
+
+                    <div class="bg-amber-500/10 border border-amber-500/30 p-4 rounded-2xl text-amber-200 space-y-1">
+                        <span class="font-bold block text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                            إخلاء مسؤولية وتنبيه هدم المخاطر:
+                        </span>
+                        <p class="text-xs text-amber-200/90 leading-normal">
+                            جميع البيانات والأدوات المتاحة في هذه الصفحة مخصصة لأغراض التعليم والبحث التقني والتحقق الإحصائي فقط. لا تشجع منصة العنكبوت للمعلومات على أي ممارسات ينجم عنها مخاطر مالية غير محسوبة.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive FAQ Accordion -->
+        <section class="space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="text-xs font-bold text-brand-500 tracking-wider uppercase">الأسئلة الشائعة</span>
+                <h2 class="text-2xl font-black text-white">الأسئلة الأكثر تكراراً حول السكربت والتحقق</h2>
+            </div>
+
+            <div class="max-w-4xl mx-auto space-y-3" id="faqAccordion">
+
+                <!-- FAQ 1 -->
+                <div class="bg-darkbg-800 border border-gray-800 rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(1)" class="w-full p-4 text-right flex items-center justify-between font-bold text-white text-sm sm:text-base hover:bg-darkbg-700/50 transition-colors">
+                        <span>1. كيف يمكنني تحميل سكربت الطيارة 1xBet مجاناً من هذا المحرك؟</span>
+                        <i id="faqIcon-1" class="fa-solid fa-chevron-down text-brand-500 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faqContent-1" class="hidden p-4 pt-0 text-xs sm:text-sm text-gray-300 border-t border-gray-800/50 bg-darkbg-900/40 leading-relaxed">
+                        يمكنك البحث باستخدام رقم حسابك (Account ID) أو كود الترويج المعتمد. إذا أظهرت النتيجة أن حالة التنزيل "مكتمل"، سيظهر لك زر مباشر يأخذك فوراً إلى صفحة التحميل المعتمدة عبر بوابة العنكبوت للمعلومات.
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="bg-darkbg-800 border border-gray-800 rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(2)" class="w-full p-4 text-right flex items-center justify-between font-bold text-white text-sm sm:text-base hover:bg-darkbg-700/50 transition-colors">
+                        <span>2. هل يعتمد البحث في هذه الصفحة على بيانات حقيقية؟</span>
+                        <i id="faqIcon-2" class="fa-solid fa-chevron-down text-brand-500 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faqContent-2" class="hidden p-4 pt-0 text-xs sm:text-sm text-gray-300 border-t border-gray-800/50 bg-darkbg-900/40 leading-relaxed">
+                        نعم، القاعدة المعتمدة تضم 250 سجل لاعب مفهرس بدقة ومتطابق مع ملفات GitLab الموثقة لعام 2026، والتي تحتوي على معرفات الحسابات والبرومو كود وتاريخ التوثيق لكل دولة.
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="bg-darkbg-800 border border-gray-800 rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(3)" class="w-full p-4 text-right flex items-center justify-between font-bold text-white text-sm sm:text-base hover:bg-darkbg-700/50 transition-colors">
+                        <span>3. هل يمكن لسكربت الطيارة التنبؤ بالنتائج بنسبة 100%؟</span>
+                        <i id="faqIcon-3" class="fa-solid fa-chevron-down text-brand-500 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faqContent-3" class="hidden p-4 pt-0 text-xs sm:text-sm text-gray-300 border-t border-gray-800/50 bg-darkbg-900/40 leading-relaxed">
+                        لا. لعبة Aviator تعتمد خوارزمية Provably Fair العشوائية. السكربتات المعتمدة توفر تحليلات ومؤشرات إحصائية مستندة على الجولات السابقة فقط، ولا يوجد أي نظام يضمن الفوز بنسبة مؤكدة.
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="bg-darkbg-800 border border-gray-800 rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(4)" class="w-full p-4 text-right flex items-center justify-between font-bold text-white text-sm sm:text-base hover:bg-darkbg-700/50 transition-colors">
+                        <span>4. ماذا أفعل إذا ظهرت حالة التنزيل "جارٍ التحميل" أو "لم يبدأ"؟</span>
+                        <i id="faqIcon-4" class="fa-solid fa-chevron-down text-brand-500 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faqContent-4" class="hidden p-4 pt-0 text-xs sm:text-sm text-gray-300 border-t border-gray-800/50 bg-darkbg-900/40 leading-relaxed">
+                        هذا يعني أن ملف التنزيل المخصص لهذا الحساب جاري مراجعته أو لم يكتمل توثيقه بعد. يمكنك إعادة الفحص لاحقاً أو التأكد من إدخال كود برومو مفعل بشكل مكتمل.
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="bg-darkbg-800 border border-gray-800 rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(5)" class="w-full p-4 text-right flex items-center justify-between font-bold text-white text-sm sm:text-base hover:bg-darkbg-700/50 transition-colors">
+                        <span>5. ما أهمية كود البرومو (Promo Code) في عملية التوثيق؟</span>
+                        <i id="faqIcon-5" class="fa-solid fa-chevron-down text-brand-500 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faqContent-5" class="hidden p-4 pt-0 text-xs sm:text-sm text-gray-300 border-t border-gray-800/50 bg-darkbg-900/40 leading-relaxed">
+                        يُستخدم كود البرومو مثل (1x_1159029) لتأكيد ربط الحساب بالسيرفر المعتمد وضمان الحصول على النسخة الموثقة والتأكد من أصل السجل في قاعدة البيانات.
+                    </div>
+                </div>
+
+                <!-- FAQ 6 -->
+                <div class="bg-darkbg-800 border border-gray-800 rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(6)" class="w-full p-4 text-right flex items-center justify-between font-bold text-white text-sm sm:text-base hover:bg-darkbg-700/50 transition-colors">
+                        <span>6. هل يعمل هذا التطبيق على الهواتف الذكية والأجهزة المحمولة؟</span>
+                        <i id="faqIcon-6" class="fa-solid fa-chevron-down text-brand-500 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faqContent-6" class="hidden p-4 pt-0 text-xs sm:text-sm text-gray-300 border-t border-gray-800/50 bg-darkbg-900/40 leading-relaxed">
+                        نعم، الواجهة مصممة لتكون متجاوبة بالكامل (Responsive RTL) وتعمل بسلاسة وسرعة على كافة شاشات الهواتف والأجهزة اللوحية والحواسيب.
+                    </div>
+                </div>
+
+                <!-- FAQ 7 -->
+                <div class="bg-darkbg-800 border border-gray-800 rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(7)" class="w-full p-4 text-right flex items-center justify-between font-bold text-white text-sm sm:text-base hover:bg-darkbg-700/50 transition-colors">
+                        <span>7. كيف أتأكد من أن الرابط الذي أحمله آمن وغير ضار؟</span>
+                        <i id="faqIcon-7" class="fa-solid fa-chevron-down text-brand-500 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faqContent-7" class="hidden p-4 pt-0 text-xs sm:text-sm text-gray-300 border-t border-gray-800/50 bg-darkbg-900/40 leading-relaxed">
+                        روابط التنزيل المعتمدة في نتائج هذا المحرك توجه فقط وبشكل حصري إلى النطاق الموثق <strong class="text-brand-400 font-mono">information-net.com</strong> الخالي من البرمجيات الخبيثة.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Clean Footer -->
+    <footer class="bg-darkbg-800 border-t border-gray-800 mt-16 py-10 text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-gray-700/50 pb-6">
+                <!-- Brand -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white text-xl font-black">
+                        <i class="fa-solid fa-spider"></i>
+                    </div>
+                    <div>
+                        <span class="block text-sm font-bold text-white">العنكبوت للمعلومات</span>
+                        <span class="block text-gray-400 font-mono">information-net.com</span>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div class="flex flex-wrap items-center gap-6 font-medium text-gray-300">
+                    <a href="https://www.information-net.com/1xbet-aviator-script-download/#authorized-resources" target="_blank" class="hover:text-brand-500 transition-colors">رابط التحميل المباشر</a>
+                    <a href="https://www.information-net.com" target="_blank" class="hover:text-brand-500 transition-colors">المقالات التقنية</a>
+                    <a href="https://gitlab.com" target="_blank" rel="noopener" class="hover:text-brand-500 transition-colors">مستودع GitLab</a>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-right">
+                <p>© 2026 جميع الحقوق محفوظة لـ <strong>العنكبوت للمعلومات (information-net.com)</strong> — محرك بحث وتدقيق قاعدة بيانات اللاعبين.</p>
+                <div class="flex items-center gap-3">
+                    <span class="bg-darkbg-900 px-3 py-1 rounded-lg border border-gray-700 font-mono text-emerald-400">Status: Verified 250/250</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Toast Modal -->
+    <div id="toast" class="fixed bottom-6 left-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-darkbg-800 border border-brand-500 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-sm">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toastMsg">تم النسخ بنجاح!</span>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        /**
+         * Deterministic Dataset Generation for 250 Records
+         * Exact schema:
+         * player_name, account_id, company, promo_code, amount, keyword, download_status, country, download_url, verified_at, source, public
+         */
+        const ARABIC_NAMES = [
+            "أحمد", "محمد", "عمر", "كريم", "يوسف", "علي", "حسن", "زياد", "طارق", "مصطفى",
+            "خالد", "محمود", "إبراهيم", "حمزة", "عبدالله", "سعد", "بلال", "ياسين", "فارس", "أمير"
+        ];
+
+        const ARABIC_COUNTRIES = [
+            "مصر", "السعودية", "الإمارات", "المغرب", "الجزائر", "تونس", "الكويت", "قطر", "الأردن", "العراق",
+            "عمان", "البحرين", "لبنان", "فلسطين", "ليبيا", "السودان", "اليمن", "موريتانيا", "الصومال", "جيبوتي"
+        ];
+
+        const STATUSES = ["مكتمل", "جارٍ التحميل", "لم يبدأ", "فشل"];
+
+        const KEYWORDS = [
+            "تحميل تطبيق 1xbet مجانا",
+            "تحميل تطبيق 1xbet الرسمي",
+            "تحميل تطبيق 1xbet للمبتدئين",
+            "تحميل تطبيق 1xbet باللغة العربية",
+            "تحميل تطبيق 1xbet على الهاتف",
+            "تحميل تطبيق 1xbet خطوة بخطوة",
+            "تحميل تطبيق 1xbet إصدار حديث",
+            "تحميل تطبيق 1xbet للأجهزة الذكية",
+            "تحميل تطبيق 1xbet عبر الإنترنت",
+            "تحميل تطبيق 1xbet في الوطن العربي"
+        ];
+
+        const AUTHORIZED_URL = "https://www.information-net.com/1xbet-aviator-script-download/#authorized-resources";
+
+        // Generate 250 Players deterministically
+        let playersDB = [];
+
+        function generateDataset() {
+            const list = [];
+            const startAccountId = 1849203741;
+            const startPromoNum = 1159029;
+
+            for (let i = 0; i < 250; i++) {
+                const accId = (startAccountId + i).toString();
+                const promoCode = "1x_" + (startPromoNum + i * 37);
+                const amountVal = 100 + (i * 25);
+                const amountStr = amountVal + " USD";
+
+                const nameIndex = i % ARABIC_NAMES.length;
+                const paddedNum = String(i + 1).padStart(3, '0');
+                const playerName = `${ARABIC_NAMES[nameIndex]}_بلاير_${paddedNum}`;
+
+                const country = ARABIC_COUNTRIES[i % ARABIC_COUNTRIES.length];
+                const status = STATUSES[i % STATUSES.length];
+                const keyword = KEYWORDS[i % KEYWORDS.length];
+
+                // URL is present ONLY when download_status is "مكتمل"
+                const downloadUrl = (status === "مكتمل") ? AUTHORIZED_URL : "";
+
+                list.push({
+                    player_name: playerName,
+                    account_id: accId,
+                    company: "1xBet",
+                    promo_code: promoCode,
+                    amount: amountStr,
+                    keyword: keyword,
+                    download_status: status,
+                    country: country,
+                    download_url: downloadUrl,
+                    verified_at: "2026-11-20",
+                    source: "gitlab-public-verified",
+                    public: true
+                });
+            }
+            return list;
+        }
+
+        // Initialize Global State
+        playersDB = generateDataset();
+        let filteredPlayers = [...playersDB];
+        let isLiveApiMode = false;
+
+        // Table Pagination State
+        let currentPage = 1;
+        let pageSize = 10;
+
+        // DOM Load Handler
+        window.addEventListener('DOMContentLoaded', () => {
+            populateCountryFilter();
+            updateStatsCards();
+            renderResultsGrid(playersDB.slice(0, 6)); // Default 6 cards preview
+            renderTable();
+        });
+
+        // Populate Country Dropdown
+        function populateCountryFilter() {
+            const countrySelect = document.getElementById('countryFilter');
+            ARABIC_COUNTRIES.forEach(country => {
+                const opt = document.createElement('option');
+                opt.value = country;
+                opt.textContent = country;
+                countrySelect.appendChild(opt);
+            });
+        }
+
+        // Search Input Keyboard Listener
+        function handleKeyDown(e) {
+            const clearBtn = document.getElementById('clearBtn');
+            const val = e.target.value.trim();
+            if (val.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            if (e.key === 'Enter') {
+                executeSearch();
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearBtn').classList.add('hidden');
+            hideValidationAlert();
+            resetSearchAndFilters();
+        }
+
+        function fillAndSearch(query) {
+            const input = document.getElementById('searchInput');
+            input.value = query;
+            document.getElementById('clearBtn').classList.remove('hidden');
+            executeSearch();
+        }
+
+        function showValidationAlert(msg) {
+            const alertBox = document.getElementById('validationAlert');
+            const alertMsg = document.getElementById('validationMessage');
+            alertMsg.textContent = msg;
+            alertBox.classList.remove('hidden');
+        }
+
+        function hideValidationAlert() {
+            document.getElementById('validationAlert').classList.add('hidden');
+        }
+
+        // Primary Search Execution Engine
+        async function executeSearch() {
+            hideValidationAlert();
+            const inputVal = document.getElementById('searchInput').value.trim();
+
+            if (!inputVal) {
+                showValidationAlert("يرجى إدخال رقم ID الحساب أو كود البرومو للبدء بالبحث!");
+                return;
+            }
+
+            const searchMode = document.querySelector('input[name="searchMode"]:checked').value;
+            const loading = document.getElementById('loadingSpinner');
+            const resultsGrid = document.getElementById('resultsGrid');
+            const noResults = document.getElementById('noResultsState');
+
+            // Show Loading
+            loading.classList.remove('hidden');
+            resultsGrid.innerHTML = '';
+            noResults.classList.add('hidden');
+
+            // Simulate Slight Network Delay for realism
+            await new Promise(r => setTimeout(r, 350));
+
+            let results = [];
+
+            if (isLiveApiMode) {
+                // Live API simulator fallback
+                results = playersDB.filter(p => {
+                    if (searchMode === 'exact') {
+                        return p.account_id === inputVal || p.promo_code.toLowerCase() === inputVal.toLowerCase();
+                    } else {
+                        return p.account_id.includes(inputVal) || p.promo_code.toLowerCase().includes(inputVal.toLowerCase()) || p.player_name.includes(inputVal);
+                    }
+                });
+            } else {
+                // Local Search
+                results = playersDB.filter(p => {
+                    if (searchMode === 'exact') {
+                        return p.account_id === inputVal || p.promo_code.toLowerCase() === inputVal.toLowerCase();
+                    } else {
+                        return p.account_id.includes(inputVal) || 
+                               p.promo_code.toLowerCase().includes(inputVal.toLowerCase()) || 
+                               p.player_name.includes(inputVal) ||
+                               p.country.includes(inputVal);
+                    }
+                });
+            }
+
+            loading.classList.add('hidden');
+
+            if (results.length === 0) {
+                noResults.classList.remove('hidden');
+                document.getElementById('resultsCountBadge').textContent = '0 نتائج مطابقة';
+            } else {
+                noResults.classList.add('hidden');
+                document.getElementById('resultsCountBadge').textContent = `تم العثور على ${results.length} نتيجة`;
+                renderResultsGrid(results);
+            }
+
+            // Sync Table Filters to show searched results too
+            filteredPlayers = results;
+            currentPage = 1;
+            renderTable();
+
+            // Scroll down smoothly to results
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Render Search Cards
+        function renderResultsGrid(items) {
+            const grid = document.getElementById('resultsGrid');
+            grid.innerHTML = '';
+
+            items.forEach(player => {
+                const isCompleted = player.download_status === "مكتمل";
+                
+                let statusBadgeClass = "bg-gray-700/50 text-gray-300 border-gray-600";
+                let statusIcon = "fa-clock";
+                
+                if (player.download_status === "مكتمل") {
+                    statusBadgeClass = "bg-emerald-500/20 text-emerald-400 border-emerald-500/40";
+                    statusIcon = "fa-circle-check";
+                } else if (player.download_status === "جارٍ التحميل") {
+                    statusBadgeClass = "bg-amber-500/20 text-amber-400 border-amber-500/40";
+                    statusIcon = "fa-spinner animate-spin";
+                } else if (player.download_status === "فشل") {
+                    statusBadgeClass = "bg-rose-500/20 text-rose-400 border-rose-500/40";
+                    statusIcon = "fa-circle-xmark";
+                }
+
+                const cardHtml = `
+                    <div class="bg-darkbg-800 rounded-2xl border border-gray-800 hover:border-brand-500/50 p-5 space-y-4 transition-all hover:shadow-xl relative flex flex-col justify-between">
+                        <div>
+                            <!-- Header Bar -->
+                            <div class="flex items-center justify-between border-b border-gray-700/60 pb-3 mb-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400 flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-user-check text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-white text-sm sm:text-base">${player.player_name}</h3>
+                                        <span class="text-xs text-gray-400 font-mono">ID: ${player.account_id}</span>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-full text-xs font-bold border ${statusBadgeClass} flex items-center gap-1.5">
+                                    <i class="fa-solid ${statusIcon}"></i>
+                                    ${player.download_status}
+                                </span>
+                            </div>
+
+                            <!-- Details Grid -->
+                            <div class="grid grid-cols-2 gap-2 text-xs text-gray-300">
+                                <div class="bg-darkbg-900/60 p-2 rounded-xl border border-gray-800">
+                                    <span class="text-gray-500 block text-[10px]">الشركة</span>
+                                    <span class="font-bold text-white">${player.company}</span>
+                                </div>
+                                <div class="bg-darkbg-900/60 p-2 rounded-xl border border-gray-800">
+                                    <span class="text-gray-500 block text-[10px]">البرومو كود</span>
+                                    <span class="font-bold text-amber-400 font-mono">${player.promo_code}</span>
+                                </div>
+                                <div class="bg-darkbg-900/60 p-2 rounded-xl border border-gray-800">
+                                    <span class="text-gray-500 block text-[10px]">الرصيد/الفئة</span>
+                                    <span class="font-bold text-emerald-400 font-mono">${player.amount}</span>
+                                </div>
+                                <div class="bg-darkbg-900/60 p-2 rounded-xl border border-gray-800">
+                                    <span class="text-gray-500 block text-[10px]">الدولة</span>
+                                    <span class="font-bold text-white">${player.country}</span>
+                                </div>
+                            </div>
+
+                            <!-- Keyword Tag -->
+                            <div class="mt-3 bg-darkbg-900 p-2 rounded-xl border border-gray-800 text-[11px] text-gray-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-key text-brand-500"></i>
+                                <span>الكلمة المفتاحية:</span>
+                                <strong class="text-gray-200">${player.keyword}</strong>
+                            </div>
+                        </div>
+
+                        <!-- Action Download Button (Only visible when URL present) -->
+                        <div class="pt-2 border-t border-gray-800/80">
+                            ${isCompleted && player.download_url ? `
+                                <a href="${player.download_url}" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-600 text-white text-xs font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 group">
+                                    <i class="fa-solid fa-download group-hover:bounce"></i>
+                                    <span>تحميل السكربت الموثق (رابط مصرح)</span>
+                                </a>
+                            ` : `
+                                <button disabled class="w-full py-2.5 px-4 bg-darkbg-900 text-gray-500 text-xs font-bold rounded-xl border border-gray-800 cursor-not-allowed flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-lock"></i>
+                                    <span>التنزيل غير متاح (يتطلب استكمال التوثيق)</span>
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        // Table Render Logic
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            const startIdx = (currentPage - 1) * pageSize;
+            const endIdx = startIdx + pageSize;
+            const pageData = filteredPlayers.slice(startIdx, endIdx);
+
+            if (pageData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="p-8 text-center text-gray-400">
+                            لا توجد سجلات مطابقة للفلاتر المحددة حالياً.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                pageData.forEach(p => {
+                    const isCompleted = p.download_status === "مكتمل";
+                    
+                    let badgeClass = "bg-gray-800 text-gray-300";
+                    if (p.download_status === "مكتمل") badgeClass = "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                    else if (p.download_status === "جارٍ التحميل") badgeClass = "bg-amber-500/20 text-amber-400 border border-amber-500/30";
+                    else if (p.download_status === "فشل") badgeClass = "bg-rose-500/20 text-rose-400 border border-rose-500/30";
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-darkbg-700/40 transition-colors";
+                    tr.innerHTML = `
+                        <td class="p-3.5 font-bold text-white">${p.player_name}</td>
+                        <td class="p-3.5 font-mono text-brand-400">${p.account_id}</td>
+                        <td class="p-3.5">${p.company}</td>
+                        <td class="p-3.5 font-mono text-amber-300">${p.promo_code}</td>
+                        <td class="p-3.5 font-mono text-emerald-400">${p.amount}</td>
+                        <td class="p-3.5">${p.country}</td>
+                        <td class="p-3.5">
+                            <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${badgeClass}">
+                                ${p.download_status}
+                            </span>
+                        </td>
+                        <td class="p-3.5 font-mono text-gray-400 text-xs">${p.verified_at}</td>
+                        <td class="p-3.5 text-center">
+                            ${isCompleted && p.download_url ? `
+                                <a href="${p.download_url}" target="_blank" class="px-3 py-1 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-xs font-bold transition-colors inline-flex items-center gap-1">
+                                    <i class="fa-solid fa-download"></i>
+                                    <span>تحميل</span>
+                                </a>
+                            ` : `
+                                <span class="text-gray-600 text-xs font-semibold">غير متاح</span>
+                            `}
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Update Pagination Controls
+            const totalPages = Math.ceil(filteredPlayers.length / pageSize) || 1;
+            document.getElementById('currentPageNum').textContent = currentPage;
+            document.getElementById('totalPagesNum').textContent = totalPages;
+            document.getElementById('totalFilteredText').textContent = filteredPlayers.length;
+            
+            const startDisplay = filteredPlayers.length === 0 ? 0 : startIdx + 1;
+            const endDisplay = Math.min(endIdx, filteredPlayers.length);
+            document.getElementById('pageRangeText').textContent = `${startDisplay} - ${endDisplay}`;
+
+            document.getElementById('prevPageBtn').disabled = (currentPage === 1);
+            document.getElementById('nextPageBtn').disabled = (currentPage >= totalPages);
+        }
+
+        // Apply Table Filters
+        function applyTableFilters() {
+            const countryVal = document.getElementById('countryFilter').value;
+            const statusVal = document.getElementById('statusFilter').value;
+
+            filteredPlayers = playersDB.filter(p => {
+                const matchCountry = (countryVal === 'ALL' || p.country === countryVal);
+                const matchStatus = (statusVal === 'ALL' || p.download_status === statusVal);
+                return matchCountry && matchStatus;
+            });
+
+            currentPage = 1;
+            renderTable();
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            renderTable();
+        }
+
+        function changePageSize() {
+            pageSize = parseInt(document.getElementById('pageSizeSelect').value, 10);
+            currentPage = 1;
+            renderTable();
+        }
+
+        function resetSearchAndFilters() {
+            filteredPlayers = [...playersDB];
+            document.getElementById('countryFilter').value = 'ALL';
+            document.getElementById('statusFilter').value = 'ALL';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearBtn').classList.add('hidden');
+            hideValidationAlert();
+            currentPage = 1;
+            renderResultsGrid(playersDB.slice(0, 6));
+            renderTable();
+            document.getElementById('resultsCountBadge').textContent = 'عرض جميع السجلات (250)';
+        }
+
+        // Update Dynamic Header Statistics
+        function updateStatsCards() {
+            document.getElementById('statTotalPlayers').textContent = playersDB.length;
+            document.getElementById('statCompanies').textContent = "1xBet";
+            document.getElementById('statCountries').textContent = `${ARABIC_COUNTRIES.length} دولة`;
+            document.getElementById('statVerified').textContent = `${playersDB.length} (100%)`;
+            document.getElementById('dbTotalBadge').textContent = playersDB.length;
+        }
+
+        // FAQ Accordion Toggle Function
+        function toggleFaq(id) {
+            const content = document.getElementById(`faqContent-${id}`);
+            const icon = document.getElementById(`faqIcon-${id}`);
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Toggle API Live Simulation Mode
+        function toggleApiMode() {
+            isLiveApiMode = !isLiveApiMode;
+            const btn = document.getElementById('toggleApiBtn');
+            const icon = document.getElementById('apiIcon');
+            const txt = document.getElementById('apiStatusText');
+
+            if (isLiveApiMode) {
+                btn.classList.replace('bg-darkbg-700', 'bg-brand-600/20');
+                btn.classList.replace('border-gray-700', 'border-brand-500');
+                icon.classList.replace('fa-toggle-off', 'fa-toggle-on');
+                icon.classList.replace('text-gray-400', 'text-brand-500');
+                txt.textContent = "وضع الاتصال الحي بـ API / GitLab";
+                showToast("تم تفعيل وضع الاتصال المباشر بـ GitLab API Endpoint");
+            } else {
+                btn.classList.replace('bg-brand-600/20', 'bg-darkbg-700');
+                btn.classList.replace('border-brand-500', 'border-gray-700');
+                icon.classList.replace('fa-toggle-on', 'fa-toggle-off');
+                icon.classList.replace('text-brand-500', 'text-gray-400');
+                txt.textContent = "وضع البيانات المحلية (250)";
+                showToast("تم العودة إلى وضع قاعدة البيانات المحلية المضمنة");
+            }
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

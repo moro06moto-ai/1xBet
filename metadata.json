@@ -1,0 +1,8 @@
+{
+  "name": "Remix العنكبوت للمعلومات — محرك بحث سكربت الطيارة 1xBet",
+  "description": "منصة الاستعلام الموثقة من بوابة العنكبوت للمعلومات للبحث والتحقق من أرقام حسابات 1xBet وأكواد البرومو وسجلات التنزيل المعتمدة لعام 2026.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
