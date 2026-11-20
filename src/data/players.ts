@@ -29,6 +29,7 @@ export interface FaqItem {
 
 export const OFFICIAL_PROMO_CODE = 'Spiderbet';
 export const OFFICIAL_CHANNEL_NAME = 'قناة كازينو العرب';
+export const SITE_REGISTRATION_URL = 'https://www.information-net.com';
 
 export const ARABIC_NAMES = [
   'أحمد',

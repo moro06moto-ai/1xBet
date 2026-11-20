@@ -4,9 +4,66 @@ import {
   OFFICIAL_CHANNEL_NAME,
   OFFICIAL_PROMO_CODE,
   PLAYERS_DB,
+  SITE_REGISTRATION_URL,
 } from '../data/players';
 
 export type ExportPart = 'embed' | 'article' | 'css' | 'js';
+
+export const DEFAULT_GITHUB_REPO_URL = 'https://github.com/moro06moto-ai/1xBet';
+export const DEFAULT_GITHUB_REPO_SLUG = 'moro06moto-ai/1xBet';
+export const DEFAULT_GITHUB_BRANCH = 'main';
+export const DEFAULT_GITHUB_DATA_FILE = 'players.json';
+
+/**
+ * ملف قاعدة البيانات players.json الحقيقي (250 لاعب) للرفع على مستودع GitHub
+ */
+export function buildRepoPlayersJson(): string {
+  return JSON.stringify(
+    {
+      repo: DEFAULT_GITHUB_REPO_URL,
+      promo_code: OFFICIAL_PROMO_CODE,
+      channel: OFFICIAL_CHANNEL_NAME,
+      updated_at: '2026-11-20',
+      players: PLAYERS_DB,
+    },
+    null,
+    2
+  );
+}
+
+/**
+ * كود التضمين الصغير للمواقع الخارجية (يدعم المستودع الخاص عبر GitHub API + Token والمستودع العام بدون Token)
+ */
+export function buildSearchEmbedOneLineTag(): string {
+  return `<!-- كود تضمين نظام البحث والنتيجة فقط (يدعم المستودع الخاص والعام) -->
+<div id="spiderbet-search-widget"></div>
+<script>
+(function () {
+  var cfg = {
+    repo: "${DEFAULT_GITHUB_REPO_SLUG}",
+    branch: "${DEFAULT_GITHUB_BRANCH}",
+    scriptFile: "spiderbet-search-embed.js",
+    file: "${DEFAULT_GITHUB_DATA_FILE}",
+    token: "YOUR_GITHUB_TOKEN"
+  };
+  window.__SPIDERBET_CONFIG__ = cfg;
+  var hasToken = cfg.token && cfg.token !== "YOUR_GITHUB_TOKEN";
+  var url = hasToken
+    ? "https://api.github.com/repos/" + cfg.repo + "/contents/" + cfg.scriptFile + "?ref=" + cfg.branch
+    : "https://raw.githubusercontent.com/" + cfg.repo + "/" + cfg.branch + "/" + cfg.scriptFile;
+  var headers = hasToken
+    ? { "Accept": "application/vnd.github.raw+json", "Authorization": "Bearer " + cfg.token }
+    : {};
+  fetch(url, { headers: headers })
+    .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+    .then(function (code) { (new Function(code))(); })
+    .catch(function () {
+      var el = document.getElementById("spiderbet-search-widget");
+      if (el) el.innerHTML = '<div dir="rtl" style="padding:18px;border-radius:14px;background:#111827;border:1px solid #1e293b;color:#f1f5f9;font-family:Cairo,system-ui,sans-serif;text-align:right"><h4 style="margin:0 0 8px;font-size:15px">متطلبات التحميل المجاني</h4><ul style="margin:0 0 14px;padding-right:18px;font-size:13px;color:#cbd5e1;line-height:1.8"><li>إنشاء حساب جديد عبر بروموكود <strong dir="ltr" style="color:#fcd34d">${OFFICIAL_PROMO_CODE}</strong></li><li>إتمام الإيداع وتوثيق الحساب بالكامل</li><li>الإعلان عن الحساب على <strong>${OFFICIAL_CHANNEL_NAME}</strong></li></ul><a href="${SITE_REGISTRATION_URL}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;background:#059669;color:#fff;text-decoration:none;font-size:13px;font-weight:700">التسجيل والاشتراك عبر الموقع</a></div>';
+    });
+})();
+</script>`;
+}
 
 /**
  * تحويل سجل اللاعبين الحقيقي إلى صيغة مضغوطة للسكربتات المصدّرة (250 لاعب)
@@ -42,6 +99,8 @@ export function buildSearchEmbedJsOnly(): string {
   var PROMO = ${JSON.stringify(OFFICIAL_PROMO_CODE)};
   var CHANNEL = ${JSON.stringify(OFFICIAL_CHANNEL_NAME)};
   var DOWNLOAD_URL = ${JSON.stringify(AUTHORIZED_URL)};
+  var SITE_URL = ${JSON.stringify(SITE_REGISTRATION_URL)};
+  var REG_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>';
 
   // قاعدة بيانات اللاعبين الحقيقية (${PLAYERS_DB.length} سجل)
   var RAW_ROWS = ${compactData};
@@ -169,11 +228,19 @@ export function buildSearchEmbedJsOnly(): string {
     '.sbw-dl { display: block; margin-top: 12px; padding: 10px 14px; border-radius: 10px; background: #059669; color: #ffffff; text-align: center; text-decoration: none; font-size: 13px; font-weight: 700; transition: background 0.15s; }',
     '.sbw-dl:hover { background: #10b981; }',
     '.sbw-locked { margin-top: 12px; padding: 9px 12px; border-radius: 10px; border: 1px solid #1e293b; background: #111827; color: #64748b; font-size: 12px; font-weight: 600; text-align: center; }',
-    '.sbw-empty { padding: 22px 16px; border-radius: 12px; border: 1px solid #1e293b; background: #0b1120; text-align: center; }',
-    '.sbw-empty h4 { margin: 0 0 6px; font-size: 15px; color: #ffffff; }',
-    '.sbw-empty p { margin: 0; font-size: 13px; color: #94a3b8; }',
+    '.sbw-empty { padding: 20px 18px; border-radius: 12px; border: 1px solid #1e293b; background: #0b1120; text-align: right; }',
+    '.sbw-empty h4 { margin: 0 0 6px; font-size: 15px; font-weight: 800; color: #ffffff; }',
+    '.sbw-empty p { margin: 0 0 12px; font-size: 13px; color: #94a3b8; }',
+    '.sbw-req-box { background: #111827; border: 1px solid #1e293b; border-radius: 10px; padding: 14px; margin-top: 10px; }',
+    '.sbw-req-title { margin: 0 0 8px; font-size: 13px; font-weight: 700; color: #fcd34d; }',
+    '.sbw-req-list { margin: 0; padding: 0 18px 0 0; font-size: 12.5px; color: #cbd5e1; line-height: 1.85; }',
+    '.sbw-reg-bar { margin-top: 14px; padding-top: 12px; border-top: 1px solid #1e293b; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }',
+    '.sbw-reg-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border-radius: 10px; background: #059669; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 700; transition: background 0.15s; }',
+    '.sbw-reg-btn:hover { background: #10b981; }',
+    '.sbw-reg-sub { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; padding: 8px 12px; border-radius: 9px; border: 1px solid rgba(14,165,233,0.4); background: rgba(14,165,233,0.1); color: #7dd3fc; text-decoration: none; font-size: 12px; font-weight: 700; }',
+    '.sbw-reg-sub:hover { background: rgba(14,165,233,0.2); color: #ffffff; }',
     '.sbw-foot { margin-top: 14px; padding-top: 10px; border-top: 1px solid #1e293b; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 11px; color: #64748b; }',
-    '@media (max-width: 560px) { .sbw-wrap { padding: 18px 14px; } .sbw-select, .sbw-submit { width: 100%; } }'
+    '@media (max-width: 560px) { .sbw-wrap { padding: 18px 14px; } .sbw-select, .sbw-submit, .sbw-reg-btn { width: 100%; } }'
   ].join('\\n');
 
   function getStatusClass(status) {
@@ -276,12 +343,24 @@ export function buildSearchEmbedJsOnly(): string {
       if (matches.length === 0) {
         resultsEl.innerHTML =
           '<div class="sbw-res-bar">' +
-            '<span>لم يتم العثور على حساب مطابق</span>' +
-            '<button type="button" class="sbw-reset-btn" data-action="reset">مسح النتائج</button>' +
+            '<span>هذا الحساب غير مسجل حاليًا ضمن الأعضاء المؤهلين</span>' +
+            '<button type="button" class="sbw-reset-btn" data-action="reset">إعادة الفحص</button>' +
           '</div>' +
           '<div class="sbw-empty">' +
-            '<h4>لم يتم العثور على الحساب على منصة ' + escapeHtml(platform) + '</h4>' +
-            '<p>تأكد من اختيار المنصة الصحيحة وكتابة رقم الحساب ID بدون مسافات، وأن الحساب مسجل عبر بروموكود <strong class="sbw-mono sbw-amber" dir="ltr">' + escapeHtml(PROMO) + '</strong>.</p>' +
+            '<h4>الحساب غير مسجل على منصة ' + escapeHtml(platform) + '</h4>' +
+            '<p>تأكد من اختيار المنصة الصحيحة وكتابة رقم الحساب بدون مسافات، ولتحميل سكربت التفاحة مجانًا يجب استيفاء متطلبات التحميل التالية:</p>' +
+            '<div class="sbw-req-box">' +
+              '<div class="sbw-req-title">متطلبات التحميل المجاني:</div>' +
+              '<ol class="sbw-req-list">' +
+                '<li>إنشاء حساب جديد باستخدام بروموكود <strong class="sbw-mono sbw-amber" dir="ltr">' + escapeHtml(PROMO) + '</strong>.</li>' +
+                '<li>إتمام الإيداع على الحساب وتوثيقه بالكامل.</li>' +
+                '<li>الإعلان عن رقم الحساب على <strong>' + escapeHtml(CHANNEL) + '</strong>.</li>' +
+              '</ol>' +
+            '</div>' +
+            '<div class="sbw-reg-bar">' +
+              '<a class="sbw-reg-btn" href="' + escapeHtml(SITE_URL) + '" target="_blank" rel="noopener noreferrer">' + REG_ICON + '<span>التسجيل والاشتراك عبر الموقع</span></a>' +
+              '<button type="button" class="sbw-promo-btn" data-copy-promo-inline="1">نسخ البروموكود: <span class="sbw-mono" dir="ltr">' + escapeHtml(PROMO) + '</span></button>' +
+            '</div>' +
           '</div>';
       } else {
         var cardsHtml = matches.map(function (acc) {
@@ -309,7 +388,7 @@ export function buildSearchEmbedJsOnly(): string {
               '</div>' +
               (isReady
                 ? '<a class="sbw-dl" href="' + escapeHtml(acc.download_url) + '" target="_blank" rel="noopener noreferrer">تحميل سكربت التفاحة مجانًا</a>'
-                : '<div class="sbw-locked">التحميل غير متاح قبل استيفاء الشروط</div>') +
+                : '<div class="sbw-locked">التحميل غير متاح قبل استيفاء متطلبات التحميل</div><a class="sbw-reg-sub" href="' + escapeHtml(SITE_URL) + '" target="_blank" rel="noopener noreferrer">' + REG_ICON + '<span>التسجيل واستكمال الشروط عبر الموقع</span></a>') +
             '</div>'
           );
         }).join('');
@@ -319,11 +398,24 @@ export function buildSearchEmbedJsOnly(): string {
             '<span>تم العثور على <strong>' + matches.length + '</strong> حساب مطابق</span>' +
             '<button type="button" class="sbw-reset-btn" data-action="reset">مسح النتائج</button>' +
           '</div>' +
-          '<div class="sbw-grid">' + cardsHtml + '</div>';
+          '<div class="sbw-grid">' + cardsHtml + '</div>' +
+          '<div class="sbw-reg-bar">' +
+            '<span style="font-size:12px;color:#94a3b8">متطلبات التحميل: بروموكود <strong class="sbw-mono sbw-amber" dir="ltr">' + escapeHtml(PROMO) + '</strong> · الإيداع والتوثيق · الإعلان على ' + escapeHtml(CHANNEL) + '</span>' +
+            '<a class="sbw-reg-btn" href="' + escapeHtml(SITE_URL) + '" target="_blank" rel="noopener noreferrer">' + REG_ICON + '<span>التسجيل عبر الموقع</span></a>' +
+          '</div>';
       }
 
       var resetBtn = resultsEl.querySelector('[data-action="reset"]');
       if (resetBtn) resetBtn.addEventListener('click', clearResults);
+
+      var inlinePromoBtn = resultsEl.querySelector('[data-copy-promo-inline]');
+      if (inlinePromoBtn) {
+        inlinePromoBtn.addEventListener('click', function () {
+          copyText(PROMO, function () {
+            inlinePromoBtn.textContent = 'تم نسخ الكود: ' + PROMO + ' ✓';
+          });
+        });
+      }
 
       var copyBtns = resultsEl.querySelectorAll('[data-copy-id]');
       copyBtns.forEach(function (btn) {
@@ -873,7 +965,16 @@ export function buildArticleJsOnly(): string {
       const matches = searchAccount(id, platform);
       if (matches.length === 0) {
         resultEl.innerHTML =
-          '<p>لم يتم العثور على حساب مطابق على منصة ' + platform + '.</p>';
+          '<div class="sb-card">' +
+            '<h4>الحساب غير مسجل ضمن الأعضاء المؤهلين حاليًا على منصة ' + platform + '</h4>' +
+            '<p class="sb-card-meta"><strong>متطلبات التحميل المجاني:</strong></p>' +
+            '<ol class="sb-list">' +
+              '<li>التسجيل بحساب جديد عبر بروموكود <strong dir="ltr">' + PROMO + '</strong>.</li>' +
+              '<li>إتمام الإيداع وتوثيق الحساب بالكامل.</li>' +
+              '<li>الإعلان عن الحساب على <strong>' + CHANNEL + '</strong>.</li>' +
+            '</ol>' +
+            '<a class="sb-dl-link" href="' + ${JSON.stringify(SITE_REGISTRATION_URL)} + '" target="_blank" rel="noopener noreferrer">التسجيل والاشتراك عبر الموقع</a>' +
+          '</div>';
         return;
       }
 
