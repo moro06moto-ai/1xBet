@@ -1,15 +1,21 @@
 import React from 'react';
 import {
   AlertTriangle,
+  CheckCircle2,
   ChevronLeft,
   Code2,
   Copy,
   FileCode2,
   Palette,
+  Play,
   Search,
   X,
 } from 'lucide-react';
-import { OFFICIAL_PROMO_CODE, PlatformName } from '../data/players';
+import {
+  DEMO_ACCOUNT,
+  OFFICIAL_PROMO_CODE,
+  PlatformName,
+} from '../data/players';
 import { ExportPart } from '../utils/exportHtml';
 
 interface SearchHeroProps {
@@ -21,7 +27,7 @@ interface SearchHeroProps {
   validationError: string | null;
   totalPlayers: number;
   completedCount: number;
-  onExecuteSearch: (overrideQuery?: string) => void;
+  onExecuteSearch: (overrideQuery?: string, overridePlatform?: PlatformName) => void;
   onClearSearch: () => void;
   onCopy: (value: string, label: string) => void;
   onQuickExportPart: (part: ExportPart) => void;
@@ -122,8 +128,99 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
             والوصول إلى رابط التحميل المجاني وبدون شراء.
           </p>
 
+          {/* Demo Account Guide Above Search */}
+          <div className="rounded-xl border border-sky-500/30 bg-[#0b1120] p-4 sm:p-5 text-right space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
+              <div className="space-y-1">
+                <p className="text-xs sm:text-sm font-bold text-white flex flex-wrap items-center gap-2">
+                  <span>حساب تجريبي للتجربة الفورية:</span>
+                  <span
+                    className="font-mono text-sm sm:text-base font-extrabold text-sky-400"
+                    dir="ltr"
+                  >
+                    {DEMO_ACCOUNT.account_id}
+                  </span>
+                </p>
+                <p className="text-xs text-slate-400">
+                  اكتب الرقم{' '}
+                  <strong className="font-mono text-sky-300" dir="ltr">
+                    {DEMO_ACCOUNT.account_id}
+                  </strong>{' '}
+                  في خانة البحث بالأسفل أو اضغط على زر التجربة لمعرفة شكل النتيجة والتفاصيل.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() =>
+                    onExecuteSearch(DEMO_ACCOUNT.account_id, DEMO_ACCOUNT.company)
+                  }
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-500 cursor-pointer"
+                >
+                  <Play className="h-3.5 w-3.5 fill-current" />
+                  <span>جرّب هذا الحساب</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    onCopy(DEMO_ACCOUNT.account_id, 'رقم الحساب التجريبي')
+                  }
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-semibold text-slate-300 transition-colors hover:border-slate-500 hover:text-white cursor-pointer"
+                >
+                  <Copy className="h-3.5 w-3.5" />
+                  <span>نسخ الرقم</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Demo Account Details Preview */}
+            <dl className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs">
+              <div className="rounded-lg border border-slate-800/80 bg-[#111827] px-3 py-2">
+                <dt className="text-[11px] text-slate-400">اسم اللاعب</dt>
+                <dd className="mt-0.5 font-bold text-white truncate">
+                  {DEMO_ACCOUNT.player_name}
+                </dd>
+              </div>
+              <div className="rounded-lg border border-slate-800/80 bg-[#111827] px-3 py-2">
+                <dt className="text-[11px] text-slate-400">رقم الحساب ID</dt>
+                <dd className="mt-0.5 font-mono font-bold text-sky-400" dir="ltr">
+                  {DEMO_ACCOUNT.account_id}
+                </dd>
+              </div>
+              <div className="rounded-lg border border-slate-800/80 bg-[#111827] px-3 py-2">
+                <dt className="text-[11px] text-slate-400">المنصة والدولة</dt>
+                <dd className="mt-0.5 font-semibold text-slate-200">
+                  <span className="font-mono" dir="ltr">
+                    {DEMO_ACCOUNT.company}
+                  </span>{' '}
+                  · {DEMO_ACCOUNT.country}
+                </dd>
+              </div>
+              <div className="rounded-lg border border-slate-800/80 bg-[#111827] px-3 py-2">
+                <dt className="text-[11px] text-slate-400">البروموكود</dt>
+                <dd className="mt-0.5 font-mono font-bold text-amber-300" dir="ltr">
+                  {DEMO_ACCOUNT.promo_code}
+                </dd>
+              </div>
+              <div className="rounded-lg border border-slate-800/80 bg-[#111827] px-3 py-2">
+                <dt className="text-[11px] text-slate-400">قيمة الإيداع</dt>
+                <dd className="mt-0.5 font-mono font-bold text-slate-100" dir="ltr">
+                  {DEMO_ACCOUNT.amount}
+                </dd>
+              </div>
+              <div className="rounded-lg border border-slate-800/80 bg-[#111827] px-3 py-2">
+                <dt className="text-[11px] text-slate-400">الحالة</dt>
+                <dd className="mt-0.5 inline-flex items-center gap-1 font-bold text-emerald-400">
+                  <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
+                  <span>{DEMO_ACCOUNT.download_status}</span>
+                </dd>
+              </div>
+            </dl>
+          </div>
+
           {/* Primary Account ID Verification Form */}
-          <form onSubmit={handleSubmit} className="pt-3 space-y-4 text-right">
+          <form onSubmit={handleSubmit} className="pt-1 space-y-4 text-right">
             <div className="flex flex-col sm:flex-row items-stretch gap-3">
               {/* Platform Select (1xBet or Linebet exclusively) */}
               <select
@@ -147,7 +244,7 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
                   type="text"
                   value={query}
                   onChange={(e) => onQueryChange(e.target.value)}
-                  placeholder="أدخل رقم الحساب الخاص ID (مثل 1849203741)"
+                  placeholder={`أدخل رقم الحساب الخاص ID (مثل ${DEMO_ACCOUNT.account_id})`}
                   aria-label="رقم الحساب الخاص ID"
                   className="h-12 w-full rounded-xl border border-slate-700 bg-[#0b1120] pr-12 pl-10 font-mono text-sm sm:text-base text-white placeholder:font-sans placeholder:text-slate-500 transition-colors focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
                 />

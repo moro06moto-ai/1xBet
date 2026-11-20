@@ -111,6 +111,10 @@ export function generatePlayersDataset(): PlayerRecord[] {
 
 export const PLAYERS_DB: PlayerRecord[] = generatePlayersDataset();
 
+export const DEMO_ACCOUNT_ID = '1849203989';
+export const DEMO_ACCOUNT: PlayerRecord =
+  PLAYERS_DB.find((p) => p.account_id === DEMO_ACCOUNT_ID) ?? PLAYERS_DB[0];
+
 export const FAQ_ITEMS: FaqItem[] = [
   {
     id: 1,

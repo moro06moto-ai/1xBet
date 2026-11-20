@@ -1,5 +1,6 @@
 import {
   AUTHORIZED_URL,
+  DEMO_ACCOUNT,
   FAQ_ITEMS,
   OFFICIAL_CHANNEL_NAME,
   OFFICIAL_PROMO_CODE,
@@ -100,6 +101,15 @@ export function buildSearchEmbedJsOnly(): string {
   var CHANNEL = ${JSON.stringify(OFFICIAL_CHANNEL_NAME)};
   var DOWNLOAD_URL = ${JSON.stringify(AUTHORIZED_URL)};
   var SITE_URL = ${JSON.stringify(SITE_REGISTRATION_URL)};
+  var DEMO_ACC = ${JSON.stringify({
+    player_name: DEMO_ACCOUNT.player_name,
+    account_id: DEMO_ACCOUNT.account_id,
+    company: DEMO_ACCOUNT.company,
+    promo_code: DEMO_ACCOUNT.promo_code,
+    amount: DEMO_ACCOUNT.amount,
+    country: DEMO_ACCOUNT.country,
+    download_status: DEMO_ACCOUNT.download_status,
+  })};
   var REG_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>';
 
   // قاعدة بيانات اللاعبين الحقيقية (${PLAYERS_DB.length} سجل)
@@ -188,6 +198,20 @@ export function buildSearchEmbedJsOnly(): string {
     '.sbw-sub { margin: 4px 0 0; font-size: 13px; color: #94a3b8; }',
     '.sbw-promo-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(245,158,11,0.4); background: rgba(245,158,11,0.1); color: #fcd34d; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.15s; }',
     '.sbw-promo-btn:hover { background: rgba(245,158,11,0.2); }',
+    '.sbw-demo { background: #0b1120; border: 1px solid rgba(14,165,233,0.35); border-radius: 12px; padding: 14px; margin-bottom: 14px; }',
+    '.sbw-demo-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid #1e293b; }',
+    '.sbw-demo-title { margin: 0; font-size: 13.5px; font-weight: 800; color: #ffffff; }',
+    '.sbw-demo-id { color: #38bdf8; margin-right: 6px; }',
+    '.sbw-demo-hint { margin: 3px 0 0; font-size: 12px; color: #94a3b8; }',
+    '.sbw-demo-actions { display: flex; flex-wrap: wrap; gap: 6px; }',
+    '.sbw-demo-try { padding: 7px 13px; border: none; border-radius: 8px; background: #059669; color: #ffffff; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }',
+    '.sbw-demo-try:hover { background: #10b981; }',
+    '.sbw-demo-copy { padding: 7px 11px; border: 1px solid #334155; border-radius: 8px; background: #111827; color: #cbd5e1; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }',
+    '.sbw-demo-copy:hover { border-color: #64748b; color: #ffffff; }',
+    '.sbw-demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(115px, 1fr)); gap: 8px; }',
+    '.sbw-demo-cell { background: #111827; border: 1px solid #1e293b; border-radius: 8px; padding: 7px 9px; }',
+    '.sbw-demo-k { display: block; font-size: 10.5px; color: #94a3b8; }',
+    '.sbw-demo-v { display: block; margin-top: 2px; font-size: 12px; font-weight: 700; color: #f8fafc; }',
     '.sbw-mono { font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace; }',
     '.sbw-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }',
     '.sbw-select, .sbw-input { height: 46px; border-radius: 10px; border: 1px solid #334155; background: #0b1120; color: #ffffff; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }',
@@ -269,13 +293,33 @@ export function buildSearchEmbedJsOnly(): string {
             '<span class="sbw-mono" dir="ltr">' + escapeHtml(PROMO) + '</span>' +
           '</button>' +
         '</div>' +
+        '<div class="sbw-demo">' +
+          '<div class="sbw-demo-top">' +
+            '<div>' +
+              '<p class="sbw-demo-title">حساب تجريبي للتجربة الفورية:<span class="sbw-mono sbw-demo-id" dir="ltr">' + escapeHtml(DEMO_ACC.account_id) + '</span></p>' +
+              '<p class="sbw-demo-hint">اكتب الرقم <strong class="sbw-mono" dir="ltr" style="color:#7dd3fc">' + escapeHtml(DEMO_ACC.account_id) + '</strong> في خانة البحث أو اضغط «جرّب هذا الحساب» لمشاهدة النتيجة بالتفصيل.</p>' +
+            '</div>' +
+            '<div class="sbw-demo-actions">' +
+              '<button type="button" class="sbw-demo-try" data-action="try-demo">▶ جرّب هذا الحساب</button>' +
+              '<button type="button" class="sbw-demo-copy" data-action="copy-demo">نسخ الرقم</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="sbw-demo-grid">' +
+            '<div class="sbw-demo-cell"><span class="sbw-demo-k">اسم اللاعب</span><span class="sbw-demo-v">' + escapeHtml(DEMO_ACC.player_name) + '</span></div>' +
+            '<div class="sbw-demo-cell"><span class="sbw-demo-k">رقم الحساب ID</span><span class="sbw-demo-v sbw-mono" dir="ltr" style="color:#38bdf8">' + escapeHtml(DEMO_ACC.account_id) + '</span></div>' +
+            '<div class="sbw-demo-cell"><span class="sbw-demo-k">المنصة والدولة</span><span class="sbw-demo-v">' + escapeHtml(DEMO_ACC.company) + ' · ' + escapeHtml(DEMO_ACC.country) + '</span></div>' +
+            '<div class="sbw-demo-cell"><span class="sbw-demo-k">البروموكود</span><span class="sbw-demo-v sbw-mono sbw-amber" dir="ltr">' + escapeHtml(DEMO_ACC.promo_code) + '</span></div>' +
+            '<div class="sbw-demo-cell"><span class="sbw-demo-k">قيمة الإيداع</span><span class="sbw-demo-v sbw-mono" dir="ltr">' + escapeHtml(DEMO_ACC.amount) + '</span></div>' +
+            '<div class="sbw-demo-cell"><span class="sbw-demo-k">الحالة</span><span class="sbw-demo-v sbw-ok">' + escapeHtml(DEMO_ACC.download_status) + '</span></div>' +
+          '</div>' +
+        '</div>' +
         '<form class="sbw-form" novalidate>' +
           '<select class="sbw-select" aria-label="اختر المنصة">' +
             '<option value="1xBet">1xBet</option>' +
             '<option value="Linebet">Linebet</option>' +
           '</select>' +
           '<div class="sbw-input-box">' +
-            '<input type="text" class="sbw-input" placeholder="أدخل رقم الحساب الخاص ID (مثل 1849203741)" aria-label="رقم الحساب الخاص ID" />' +
+            '<input type="text" class="sbw-input" placeholder="أدخل رقم الحساب الخاص ID (مثل ' + escapeHtml(DEMO_ACC.account_id) + ')" aria-label="رقم الحساب الخاص ID" />' +
             '<button type="button" class="sbw-clear-x" aria-label="مسح">×</button>' +
           '</div>' +
           '<button type="submit" class="sbw-submit">فحص الحساب</button>' +
@@ -295,6 +339,8 @@ export function buildSearchEmbedJsOnly(): string {
     var errorEl = root.querySelector('.sbw-error');
     var resultsEl = root.querySelector('.sbw-results');
     var promoBtn = root.querySelector('[data-action="copy-promo"]');
+    var tryDemoBtn = root.querySelector('[data-action="try-demo"]');
+    var copyDemoBtn = root.querySelector('[data-action="copy-demo"]');
 
     function clearResults() {
       inputEl.value = '';
@@ -325,6 +371,31 @@ export function buildSearchEmbedJsOnly(): string {
         }, 1800);
       });
     });
+
+    if (tryDemoBtn) {
+      tryDemoBtn.addEventListener('click', function () {
+        platformEl.value = DEMO_ACC.company;
+        inputEl.value = DEMO_ACC.account_id;
+        clearBtn.classList.add('is-visible');
+        if (typeof form.requestSubmit === 'function') {
+          form.requestSubmit();
+        } else {
+          form.dispatchEvent(new Event('submit', { cancelable: true }));
+        }
+      });
+    }
+
+    if (copyDemoBtn) {
+      copyDemoBtn.addEventListener('click', function () {
+        copyText(DEMO_ACC.account_id, function () {
+          var prev = copyDemoBtn.textContent;
+          copyDemoBtn.textContent = 'تم النسخ ✓';
+          setTimeout(function () {
+            copyDemoBtn.textContent = prev;
+          }, 1600);
+        });
+      });
+    }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -513,6 +584,25 @@ export function buildArticleHtmlOnly(): string {
     <h2 id="sb-checker-title">فحص رقم الحساب الخاص ID</h2>
     <p>اختر المنصة المسجل عليها ثم أدخل رقم الحساب الخاص بك واضغط على زر البحث للتحقق من أهليتك للتحميل.</p>
 
+    <!-- حساب تجريبي فوق البحث -->
+    <div class="sb-demo-box">
+      <div class="sb-demo-top">
+        <div>
+          <strong>حساب تجريبي للتجربة الفورية: <span dir="ltr">${DEMO_ACCOUNT.account_id}</span></strong>
+          <p>اكتب الرقم <strong dir="ltr">${DEMO_ACCOUNT.account_id}</strong> في خانة البحث بالأسفل أو اضغط على زر التجربة لمعرفة شكل النتيجة والتفاصيل.</p>
+        </div>
+        <button type="button" class="sb-btn sb-demo-btn" data-try-demo="${DEMO_ACCOUNT.account_id}" data-try-platform="${DEMO_ACCOUNT.company}">جرّب هذا الحساب</button>
+      </div>
+      <div class="sb-demo-meta">
+        <span>اللاعب: <strong>${DEMO_ACCOUNT.player_name}</strong></span>
+        <span>الحساب: <strong dir="ltr">${DEMO_ACCOUNT.account_id}</strong></span>
+        <span>المنصة والدولة: <strong>${DEMO_ACCOUNT.company} · ${DEMO_ACCOUNT.country}</strong></span>
+        <span>البروموكود: <strong dir="ltr">${DEMO_ACCOUNT.promo_code}</strong></span>
+        <span>الإيداع: <strong dir="ltr">${DEMO_ACCOUNT.amount}</strong></span>
+        <span>الحالة: <strong>${DEMO_ACCOUNT.download_status}</strong></span>
+      </div>
+    </div>
+
     <form id="sbSearchForm" class="sb-form">
       <select id="sbPlatform" class="sb-select" aria-label="اختر المنصة">
         <option value="1xBet">1xBet</option>
@@ -523,7 +613,7 @@ export function buildArticleHtmlOnly(): string {
         id="sbQuery"
         type="text"
         class="sb-input"
-        placeholder="أدخل رقم الحساب الخاص ID (مثل 1849203741)"
+        placeholder="أدخل رقم الحساب الخاص ID (مثل ${DEMO_ACCOUNT.account_id})"
         aria-label="رقم الحساب الخاص ID"
       />
 
@@ -679,6 +769,50 @@ export function buildArticleCssOnly(): string {
   font-size: 14px;
   color: #cbd5e1;
   margin: 0 0 12px;
+}
+
+#spiderbet-article .sb-demo-box {
+  background: #0b1120;
+  border: 1px solid rgba(14, 165, 233, 0.35);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 14px;
+}
+
+#spiderbet-article .sb-demo-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #1e293b;
+}
+
+#spiderbet-article .sb-demo-top p {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  color: #94a3b8;
+}
+
+#spiderbet-article .sb-demo-btn {
+  height: auto;
+  padding: 8px 16px;
+  background: #059669;
+  font-size: 12.5px;
+}
+
+#spiderbet-article .sb-demo-btn:hover {
+  background: #10b981;
+}
+
+#spiderbet-article .sb-demo-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 12.5px;
+  color: #cbd5e1;
 }
 
 #spiderbet-article .sb-form {
@@ -998,6 +1132,16 @@ export function buildArticleJsOnly(): string {
           })
           .join('') +
         '</div>';
+    });
+
+    document.querySelectorAll('[data-try-demo]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const demoId = btn.getAttribute('data-try-demo') || ${JSON.stringify(DEMO_ACCOUNT.account_id)};
+        const demoPlatform = btn.getAttribute('data-try-platform') || ${JSON.stringify(DEMO_ACCOUNT.company)};
+        platformEl.value = demoPlatform;
+        queryEl.value = demoId;
+        form.dispatchEvent(new Event('submit', { cancelable: true }));
+      });
     });
   }
 

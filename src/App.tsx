@@ -59,12 +59,19 @@ export default function App() {
     }
   };
 
-  const handleExecuteSearch = (overrideQuery?: string) => {
+  const handleExecuteSearch = (
+    overrideQuery?: string,
+    overridePlatform?: PlatformName
+  ) => {
     const rawVal = typeof overrideQuery === 'string' ? overrideQuery : query;
     const trimmed = rawVal.trim();
+    const activePlatform = overridePlatform ?? platform;
 
     if (typeof overrideQuery === 'string') {
       setQuery(overrideQuery);
+    }
+    if (overridePlatform) {
+      setPlatform(overridePlatform);
     }
 
     if (!trimmed) {
@@ -80,7 +87,7 @@ export default function App() {
 
     window.setTimeout(() => {
       const matches = PLAYERS_DB.filter((p) => {
-        if (p.company !== platform) return false;
+        if (p.company !== activePlatform) return false;
 
         return (
           p.account_id.includes(trimmed) ||
