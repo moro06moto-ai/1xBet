@@ -36,6 +36,20 @@ export function buildRepoPlayersJson(): string {
  * كود التضمين الصغير للمواقع الخارجية (يدعم المستودع الخاص عبر GitHub API + Token والمستودع العام بدون Token)
  */
 export function buildSearchEmbedOneLineTag(): string {
+  const demoJson = JSON.stringify({
+    player_name: DEMO_ACCOUNT.player_name,
+    account_id: DEMO_ACCOUNT.account_id,
+    company: DEMO_ACCOUNT.company,
+    promo_code: DEMO_ACCOUNT.promo_code,
+    amount: DEMO_ACCOUNT.amount,
+    country: DEMO_ACCOUNT.country,
+    download_status: DEMO_ACCOUNT.download_status,
+    download_url: DEMO_ACCOUNT.download_url,
+    verified_at: DEMO_ACCOUNT.verified_at,
+    deposit_verified: DEMO_ACCOUNT.deposit_verified,
+    announced_on_channel: DEMO_ACCOUNT.announced_on_channel,
+  });
+
   return `<div id="spiderbet-search-widget"></div>
 <script>
 (function () {
@@ -47,43 +61,279 @@ export function buildSearchEmbedOneLineTag(): string {
     if (cur && cur.parentNode) { cur.parentNode.insertBefore(box, cur); }
     else if (document.body) { document.body.appendChild(box); }
   }
+  if (box.getAttribute("data-sb-init") === "1") { return; }
+  box.setAttribute("data-sb-init", "1");
+
   var cfg = {
     repo: "${DEFAULT_GITHUB_REPO_SLUG}",
     branch: "${DEFAULT_GITHUB_BRANCH}",
-    scriptFile: "spiderbet-search-embed.js",
     file: "${DEFAULT_GITHUB_DATA_FILE}",
     token: "YOUR_GITHUB_TOKEN"
   };
-  window.__SPIDERBET_CONFIG__ = cfg;
-  var hasToken = cfg.token && cfg.token !== "YOUR_GITHUB_TOKEN";
-  var url = hasToken
-    ? "https://api.github.com/repos/" + cfg.repo + "/contents/" + cfg.scriptFile + "?ref=" + cfg.branch
-    : "https://raw.githubusercontent.com/" + cfg.repo + "/" + cfg.branch + "/" + cfg.scriptFile;
-  var headers = hasToken
-    ? { "Accept": "application/vnd.github.raw+json", "Authorization": "Bearer " + cfg.token }
-    : {};
-  fetch(url, { headers: headers })
-    .then(function (r) { if (!r.ok) { throw new Error("HTTP " + r.status); } return r.text(); })
-    .then(function (txt) {
-      var code = txt;
-      if (txt && txt.charAt(0) === "{") {
-        try {
-          var j = JSON.parse(txt);
-          if (j && j.content && j.encoding === "base64") {
-            var bin = atob(j.content.replace(/\\s/g, ""));
-            var bytes = new Uint8Array(bin.length);
-            for (var i = 0; i < bin.length; i++) { bytes[i] = bin.charCodeAt(i); }
-            code = new TextDecoder("utf-8").decode(bytes);
-          }
-        } catch (e) {}
-      }
-      var s = document.createElement("script");
-      s.textContent = code;
-      (document.head || document.body).appendChild(s);
-    })
-    .catch(function () {
-      box.innerHTML = '<div dir="rtl" style="padding:18px;border-radius:14px;background:#111827;border:1px solid #1e293b;color:#f1f5f9;font-family:Cairo,system-ui,sans-serif;text-align:right"><h4 style="margin:0 0 8px;font-size:15px">متطلبات التحميل المجاني</h4><ul style="margin:0 0 14px;padding-right:18px;font-size:13px;color:#cbd5e1;line-height:1.8"><li>إنشاء حساب جديد عبر بروموكود <strong dir="ltr" style="color:#fcd34d">${OFFICIAL_PROMO_CODE}</strong></li><li>إتمام الإيداع وتوثيق الحساب بالكامل</li><li>الإعلان عن الحساب على <strong>${OFFICIAL_CHANNEL_NAME}</strong></li></ul><a href="${SITE_REGISTRATION_URL}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;background:#059669;color:#fff;text-decoration:none;font-size:13px;font-weight:700">التسجيل والاشتراك عبر الموقع</a></div>';
+
+  var PROMO = ${JSON.stringify(OFFICIAL_PROMO_CODE)};
+  var CHANNEL = ${JSON.stringify(OFFICIAL_CHANNEL_NAME)};
+  var SITE_URL = ${JSON.stringify(SITE_REGISTRATION_URL)};
+  var DEFAULT_DL = ${JSON.stringify(AUTHORIZED_URL)};
+  var DEMO = ${demoJson};
+  var REG_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>';
+
+  function esc(s) {
+    return String(s || "").replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
+  }
+
+  function maskName(s) {
+    var parts = String(s || "").trim().split(/\\s+/).filter(Boolean);
+    if (!parts.length) { return "******"; }
+    return parts.map(function (w) { return Array.from(w)[0] + "****"; }).join(" ");
+  }
+
+  function copyStr(val, onDone) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(val).then(onDone).catch(function () { onDone(); });
+    } else {
+      var ta = document.createElement("textarea");
+      ta.value = val;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      onDone();
+    }
+  }
+
+  var root = box.attachShadow ? box.attachShadow({ mode: "open" }) : box;
+  root.innerHTML =
+    '<style>' +
+      '.sb{font-family:Cairo,system-ui,-apple-system,sans-serif;direction:rtl;text-align:right;background:#111827;color:#f1f5f9;border:1px solid #1e293b;border-radius:16px;padding:22px 18px;max-width:820px;margin:16px auto;box-sizing:border-box;line-height:1.7}' +
+      '.sb *{box-sizing:border-box}.sbm{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}' +
+      '.sbh{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid #1e293b}' +
+      '.sbh h3{margin:0;font-size:18px;font-weight:800;color:#fff}.sbh p{margin:3px 0 0;font-size:13px;color:#94a3b8}' +
+      '.sbp{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;border:1px solid rgba(245,158,11,.4);background:rgba(245,158,11,.1);color:#fcd34d;font:700 12px inherit;cursor:pointer}' +
+      '.sbd{background:#0b1120;border:1px solid rgba(14,165,233,.35);border-radius:12px;padding:14px;margin-bottom:14px}' +
+      '.sbd-t{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid #1e293b}' +
+      '.sbd-h{margin:0;font-size:13.5px;font-weight:800;color:#fff}.sbd-p{margin:3px 0 0;font-size:12px;color:#94a3b8}' +
+      '.sbd-a{display:flex;flex-wrap:wrap;gap:6px}.sbd-try{padding:7px 13px;border:none;border-radius:8px;background:#059669;color:#fff;font:700 12px inherit;cursor:pointer}' +
+      '.sbd-try:hover{background:#10b981}.sbd-cp{padding:7px 11px;border:1px solid #334155;border-radius:8px;background:#111827;color:#cbd5e1;font:600 12px inherit;cursor:pointer}' +
+      '.sbd-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px}' +
+      '.sbd-c{background:#111827;border:1px solid #1e293b;border-radius:8px;padding:7px 9px}' +
+      '.sbd-k{display:block;font-size:10.5px;color:#94a3b8}.sbd-v{display:block;margin-top:2px;font-size:12px;font-weight:700;color:#f8fafc}' +
+      '.sbf{display:flex;flex-wrap:wrap;gap:10px}.sbs,.sbi{height:46px;border-radius:10px;border:1px solid #334155;background:#0b1120;color:#fff;font:600 14px inherit;outline:none}' +
+      '.sbs{min-width:125px;padding:0 12px;cursor:pointer}.sbi{flex:1 1 220px;padding:0 14px}.sbi:focus,.sbs:focus{border-color:#0ea5e9}' +
+      '.sbb{height:46px;padding:0 22px;border:none;border-radius:10px;background:#0284c7;color:#fff;font:700 14px inherit;cursor:pointer}.sbb:hover{background:#0ea5e9}' +
+      '.sbe{margin-top:10px;padding:10px 14px;border-radius:10px;background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.35);color:#fda4af;font-size:13px;display:none}' +
+      '.sbr{margin-top:16px}.sbg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}' +
+      '.sbc{background:#0b1120;border:1px solid #1e293b;border-radius:12px;padding:16px}' +
+      '.sbct{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding-bottom:10px;border-bottom:1px solid #1e293b}' +
+      '.sbct h4{margin:0;font-size:15px;color:#fff}.sbid{font-size:12px;color:#38bdf8;margin-top:4px;display:flex;align-items:center;gap:6px}' +
+      '.sbmc{padding:2px 7px;border-radius:6px;border:1px solid #1e293b;background:#111827;color:#94a3b8;font:600 11px inherit;cursor:pointer}' +
+      '.sbl{list-style:none;margin:10px 0 0;padding:0;font-size:12.5px}.sbl li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid rgba(30,41,59,.65);color:#94a3b8}' +
+      '.sbl li:last-child{border-bottom:none}.sbl strong{color:#f1f5f9}.ok{color:#34d399!important}.amb{color:#fcd34d!important}' +
+      '.sbdl{display:block;margin-top:12px;padding:10px 14px;border-radius:10px;background:#059669;color:#fff;text-align:center;text-decoration:none;font:700 13px inherit}' +
+      '.sblk{margin-top:12px;padding:9px;border-radius:10px;background:#111827;border:1px solid #1e293b;color:#94a3b8;font-size:12px;text-align:center}' +
+      '.sbem{background:#0b1120;border:1px solid #1e293b;border-radius:12px;padding:18px}.sbem h4{margin:0 0 6px;font-size:15px;color:#fff}.sbem p{margin:0 0 12px;font-size:13px;color:#94a3b8}' +
+      '.sbrq{background:#111827;border:1px solid #1e293b;border-radius:10px;padding:14px}.sbrq-t{font-size:13px;font-weight:700;color:#fcd34d;margin-bottom:8px}' +
+      '.sbrq ol{margin:0;padding:0 18px 0 0;font-size:12.5px;color:#cbd5e1;line-height:1.9}' +
+      '.sbrg{margin-top:14px;padding-top:12px;border-top:1px solid #1e293b;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}' +
+      '.sbrgb{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:10px;background:#059669;color:#fff;text-decoration:none;font:700 13px inherit}' +
+      '.sbrgb:hover{background:#10b981}' +
+      '@media(max-width:560px){.sbs,.sbb,.sbrgb{width:100%}}' +
+    '</style>' +
+    '<div class="sb">' +
+      '<div class="sbh">' +
+        '<div><h3>فحص رقم الحساب الخاص ID — سكربت التفاحة</h3><p>تحقق من أهليتك للتحميل المجاني على منصتي 1xBet وLinebet</p></div>' +
+        '<button type="button" class="sbp" data-copy-promo="1">البروموكود: <span class="sbm" dir="ltr">' + esc(PROMO) + '</span></button>' +
+      '</div>' +
+      '<div class="sbd">' +
+        '<div class="sbd-t">' +
+          '<div><p class="sbd-h">حساب تجريبي للتجربة الفورية: <span class="sbm" dir="ltr" style="color:#38bdf8">' + esc(DEMO.account_id) + '</span></p><p class="sbd-p">اكتب الرقم <strong class="sbm" dir="ltr" style="color:#7dd3fc">' + esc(DEMO.account_id) + '</strong> في خانة البحث أو اضغط «جرّب هذا الحساب» لمشاهدة النتيجة بالتفصيل.</p></div>' +
+          '<div class="sbd-a"><button type="button" class="sbd-try" data-try-demo="1">▶ جرّب هذا الحساب</button><button type="button" class="sbd-cp" data-copy-demo="1">نسخ الرقم</button></div>' +
+        '</div>' +
+        '<div class="sbd-g">' +
+          '<div class="sbd-c"><span class="sbd-k">اسم اللاعب</span><span class="sbd-v">' + esc(maskName(DEMO.player_name)) + '</span></div>' +
+          '<div class="sbd-c"><span class="sbd-k">رقم الحساب ID</span><span class="sbd-v sbm" dir="ltr" style="color:#38bdf8">' + esc(DEMO.account_id) + '</span></div>' +
+          '<div class="sbd-c"><span class="sbd-k">المنصة والدولة</span><span class="sbd-v">' + esc(DEMO.company) + ' · ' + esc(DEMO.country) + '</span></div>' +
+          '<div class="sbd-c"><span class="sbd-k">البروموكود</span><span class="sbd-v sbm amb" dir="ltr">' + esc(DEMO.promo_code) + '</span></div>' +
+          '<div class="sbd-c"><span class="sbd-k">قيمة الإيداع</span><span class="sbd-v sbm" dir="ltr">' + esc(DEMO.amount) + '</span></div>' +
+          '<div class="sbd-c"><span class="sbd-k">الحالة</span><span class="sbd-v ok">' + esc(DEMO.download_status) + '</span></div>' +
+        '</div>' +
+      '</div>' +
+      '<form class="sbf" novalidate>' +
+        '<select class="sbs" aria-label="اختر المنصة"><option value="1xBet">1xBet</option><option value="Linebet">Linebet</option></select>' +
+        '<input class="sbi sbm" type="text" placeholder="أدخل رقم الحساب الخاص ID (مثل ' + esc(DEMO.account_id) + ')" aria-label="رقم الحساب الخاص ID" />' +
+        '<button class="sbb" type="submit">فحص الحساب</button>' +
+      '</form>' +
+      '<div class="sbe" role="alert"></div>' +
+      '<div class="sbr" aria-live="polite"></div>' +
+    '</div>';
+
+  var form = root.querySelector(".sbf");
+  var sel = root.querySelector(".sbs");
+  var inp = root.querySelector(".sbi");
+  var err = root.querySelector(".sbe");
+  var res = root.querySelector(".sbr");
+  var cachedList = null;
+
+  function parseGitHubJson(txt) {
+    if (!txt) { return []; }
+    var parsed = JSON.parse(txt);
+    if (parsed && parsed.content && parsed.encoding === "base64") {
+      var bin = atob(parsed.content.replace(/\\s/g, ""));
+      var bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) { bytes[i] = bin.charCodeAt(i); }
+      parsed = JSON.parse(new TextDecoder("utf-8").decode(bytes));
+    }
+    if (Array.isArray(parsed)) { return parsed; }
+    if (parsed && Array.isArray(parsed.players)) { return parsed.players; }
+    return [];
+  }
+
+  function loadPlayers() {
+    if (cachedList) { return Promise.resolve(cachedList); }
+    var hasToken = cfg.token && cfg.token !== "YOUR_GITHUB_TOKEN";
+    var url = hasToken
+      ? "https://api.github.com/repos/" + cfg.repo + "/contents/" + cfg.file + "?ref=" + cfg.branch
+      : "https://raw.githubusercontent.com/" + cfg.repo + "/" + cfg.branch + "/" + cfg.file;
+    var headers = hasToken
+      ? { "Accept": "application/vnd.github.raw+json", "Authorization": "Bearer " + cfg.token }
+      : {};
+    return fetch(url, { headers: headers })
+      .then(function (r) { if (!r.ok) { return ""; } return r.text(); })
+      .then(function (txt) {
+        var list = txt ? parseGitHubJson(txt) : [];
+        var hasDemo = list.some(function (p) { return String(p.account_id) === DEMO.account_id; });
+        if (!hasDemo) { list = list.concat([DEMO]); }
+        cachedList = list;
+        return list;
+      })
+      .catch(function () { return [DEMO]; });
+  }
+
+  root.addEventListener("click", function (e) {
+    var t = e.target;
+    if (!t || !t.closest) { return; }
+    var cpPromo = t.closest("[data-copy-promo]");
+    if (cpPromo) {
+      var old = cpPromo.innerHTML;
+      copyStr(PROMO, function () {
+        cpPromo.textContent = "تم نسخ الكود: " + PROMO + " ✓";
+        setTimeout(function () { cpPromo.innerHTML = old; }, 1600);
+      });
+      return;
+    }
+    var cpDemo = t.closest("[data-copy-demo]");
+    if (cpDemo) {
+      var oldD = cpDemo.textContent;
+      copyStr(DEMO.account_id, function () {
+        cpDemo.textContent = "تم النسخ ✓";
+        setTimeout(function () { cpDemo.textContent = oldD; }, 1500);
+      });
+      return;
+    }
+    var tryBtn = t.closest("[data-try-demo]");
+    if (tryBtn) {
+      sel.value = DEMO.company;
+      inp.value = DEMO.account_id;
+      runSearch();
+      return;
+    }
+    var cpId = t.closest("[data-copy-id]");
+    if (cpId) {
+      var idVal = cpId.getAttribute("data-copy-id") || "";
+      copyStr(idVal, function () {
+        cpId.textContent = "تم ✓";
+        setTimeout(function () { cpId.textContent = "نسخ"; }, 1400);
+      });
+    }
+  });
+
+  function runSearch() {
+    var q = inp.value.trim();
+    var platform = sel.value;
+    if (!q) {
+      err.textContent = "يرجى إدخال رقم الحساب الخاص ID للبدء بالفحص.";
+      err.style.display = "block";
+      return;
+    }
+    err.style.display = "none";
+    res.innerHTML = '<div style="font-size:13px;color:#94a3b8;padding:10px 0">جارٍ فحص رقم الحساب...</div>';
+
+    loadPlayers().then(function (list) {
+      var nq = q.toLowerCase();
+      var matches = list.filter(function (p) {
+        if ((p.company || "1xBet") !== platform) { return false; }
+        return (
+          String(p.account_id || "").indexOf(q) !== -1 ||
+          String(p.promo_code || "").toLowerCase().indexOf(nq) !== -1 ||
+          String(p.country || "").indexOf(q) !== -1
+        );
+      });
+
+      if (matches.length === 0) {
+        res.innerHTML =
+          '<div class="sbem">' +
+            '<h4>الحساب غير مسجل حاليًا على منصة ' + esc(platform) + '</h4>' +
+            '<p>لم يتم العثور على هذا الحساب ضمن قائمة الأعضاء المؤهلين، لاستكمال التسجيل وتحميل السكربت مجانًا يرجى استيفاء متطلبات التحميل التالية:</p>' +
+            '<div class="sbrq">' +
+              '<div class="sbrq-t">متطلبات التحميل المجاني:</div>' +
+              '<ol>' +
+                '<li>إنشاء حساب جديد عبر بروموكود <strong class="sbm amb" dir="ltr">' + esc(PROMO) + '</strong>.</li>' +
+                '<li>إتمام الإيداع على الحساب وتوثيقه بالكامل.</li>' +
+                '<li>الإعلان عن رقم الحساب على <strong>' + esc(CHANNEL) + '</strong>.</li>' +
+              '</ol>' +
+            '</div>' +
+            '<div class="sbrg">' +
+              '<a class="sbrgb" href="' + esc(SITE_URL) + '" target="_blank" rel="noopener noreferrer">' + REG_ICON + '<span>التسجيل والاشتراك عبر الموقع</span></a>' +
+              '<button type="button" class="sbp" data-copy-promo="1">نسخ البروموكود: <span class="sbm" dir="ltr">' + esc(PROMO) + '</span></button>' +
+            '</div>' +
+          '</div>';
+        return;
+      }
+
+      var cards = matches.map(function (p) {
+        var st = p.download_status || "";
+        var ready = st === "مكتمل";
+        var dlUrl = p.download_url || DEFAULT_DL;
+        var verified = p.deposit_verified !== undefined ? p.deposit_verified : (ready || st === "جارٍ التحميل");
+        var announced = p.announced_on_channel !== undefined ? p.announced_on_channel : ready;
+        return (
+          '<div class="sbc">' +
+            '<div class="sbct">' +
+              '<div><h4>' + esc(maskName(p.player_name)) + '</h4><div class="sbid"><span class="sbm" dir="ltr">' + esc(p.account_id) + '</span><button type="button" class="sbmc" data-copy-id="' + esc(p.account_id) + '">نسخ</button></div></div>' +
+              '<span class="' + (ready ? "ok" : "amb") + '" style="font-size:12px;font-weight:700">' + esc(st) + '</span>' +
+            '</div>' +
+            '<ul class="sbl">' +
+              '<li><span>المنصة والدولة</span><strong>' + esc(p.company || platform) + ' · ' + esc(p.country || "—") + '</strong></li>' +
+              '<li><span>البروموكود</span><strong class="sbm amb" dir="ltr">' + esc(p.promo_code) + '</strong></li>' +
+              (p.amount ? '<li><span>قيمة الإيداع</span><strong class="sbm" dir="ltr">' + esc(p.amount) + '</strong></li>' : '') +
+              '<li><span>الإيداع والتوثيق</span><strong class="' + (verified ? "ok" : "") + '">' + (verified ? "تم الإيداع والتوثيق" : "بانتظار الإيداع") + '</strong></li>' +
+              '<li><span>الإعلان (' + esc(CHANNEL) + ')</span><strong class="' + (announced ? "ok" : "") + '">' + (announced ? "تم الإعلان" : "لم يُعلن بعد") + '</strong></li>' +
+              (p.verified_at ? '<li><span>تاريخ التحقق</span><strong class="sbm" dir="ltr">' + esc(p.verified_at) + '</strong></li>' : '') +
+            '</ul>' +
+            (ready
+              ? '<a class="sbdl" href="' + esc(dlUrl) + '" target="_blank" rel="noopener noreferrer">تحميل سكربت التفاحة مجانًا</a>'
+              : '<div class="sblk">التحميل غير متاح قبل استيفاء متطلبات التحميل</div>') +
+          '</div>'
+        );
+      }).join("");
+
+      res.innerHTML =
+        '<div class="sbg">' + cards + '</div>' +
+        '<div class="sbrg">' +
+          '<span style="font-size:12px;color:#94a3b8">متطلبات التحميل: بروموكود <strong class="sbm amb" dir="ltr">' + esc(PROMO) + '</strong> · الإيداع والتوثيق · الإعلان على ' + esc(CHANNEL) + '</span>' +
+          '<a class="sbrgb" href="' + esc(SITE_URL) + '" target="_blank" rel="noopener noreferrer">' + REG_ICON + '<span>التسجيل عبر الموقع</span></a>' +
+        '</div>';
+    });
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    runSearch();
+  });
 })();
 </script>`;
 }
