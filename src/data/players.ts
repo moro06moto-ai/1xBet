@@ -1,3 +1,5 @@
+import { RAW_PLAYERS_DATA } from './playersRaw';
+
 export type DownloadStatus = 'مكتمل' | 'جارٍ التحميل' | 'لم يبدأ' | 'فشل';
 export type PlatformName = '1xBet' | 'Linebet';
 
@@ -62,15 +64,15 @@ export const ARABIC_COUNTRIES = [
   'قطر',
   'الأردن',
   'العراق',
-  'عمان',
-  'البحرين',
   'لبنان',
+  'البحرين',
+  'سوريا',
   'فلسطين',
   'ليبيا',
-  'السودان',
+  'عُمان',
   'اليمن',
+  'السودان',
   'موريتانيا',
-  'الصومال',
   'جيبوتي',
 ] as const;
 
@@ -93,50 +95,17 @@ export const KEYWORDS = [
 ] as const;
 
 export const AUTHORIZED_URL =
-  'https://www.information-net.com/1xbet-apple-script-download/#authorized-resources';
+  'https://www.information-net.com/1xbet-aviator-script-download/#authorized-resources';
 
 export function generatePlayersDataset(): PlayerRecord[] {
-  const list: PlayerRecord[] = [];
-  const startAccountId = 1849203741;
-
-  for (let i = 0; i < 250; i++) {
-    const accId = (startAccountId + i).toString();
-    const company: PlatformName = i % 2 === 0 ? '1xBet' : 'Linebet';
-    const amountVal = 100 + i * 25;
-    const amountStr = `${amountVal} USD`;
-
-    const nameIndex = i % ARABIC_NAMES.length;
-    const paddedNum = String(i + 1).padStart(3, '0');
-    const playerName = `${ARABIC_NAMES[nameIndex]}_عضو_${paddedNum}`;
-
-    const country = ARABIC_COUNTRIES[i % ARABIC_COUNTRIES.length];
-    const status = DOWNLOAD_STATUSES[i % DOWNLOAD_STATUSES.length];
-    const keyword = KEYWORDS[i % KEYWORDS.length];
-
-    const isCompleted = status === 'مكتمل';
-    const depositVerified = isCompleted || status === 'جارٍ التحميل';
-    const announcedOnChannel = isCompleted;
-    const downloadUrl = isCompleted ? AUTHORIZED_URL : '';
-
-    list.push({
-      player_name: playerName,
-      account_id: accId,
-      company,
-      promo_code: OFFICIAL_PROMO_CODE,
-      amount: amountStr,
-      keyword,
-      download_status: status,
-      deposit_verified: depositVerified,
-      announced_on_channel: announcedOnChannel,
-      country,
-      download_url: downloadUrl,
-      verified_at: '2026-11-20',
-      source: 'spiderbet-verified-2026',
-      public: true,
-    });
-  }
-
-  return list;
+  return RAW_PLAYERS_DATA.map((raw) => {
+    const isCompleted = raw.download_status === 'مكتمل';
+    return {
+      ...raw,
+      deposit_verified: isCompleted || raw.download_status === 'جارٍ التحميل',
+      announced_on_channel: isCompleted,
+    };
+  });
 }
 
 export const PLAYERS_DB: PlayerRecord[] = generatePlayersDataset();

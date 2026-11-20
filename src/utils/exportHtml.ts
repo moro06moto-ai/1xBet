@@ -1,20 +1,36 @@
 import {
-  ARABIC_COUNTRIES,
-  ARABIC_NAMES,
   AUTHORIZED_URL,
-  DOWNLOAD_STATUSES,
   FAQ_ITEMS,
   OFFICIAL_CHANNEL_NAME,
   OFFICIAL_PROMO_CODE,
+  PLAYERS_DB,
 } from '../data/players';
 
 export type ExportPart = 'embed' | 'article' | 'css' | 'js';
+
+/**
+ * تحويل سجل اللاعبين الحقيقي إلى صيغة مضغوطة للسكربتات المصدّرة (250 لاعب)
+ */
+function serializeCompactPlayersTuples(): string {
+  const tuples = PLAYERS_DB.map((p) => [
+    p.player_name,
+    p.account_id,
+    p.company,
+    p.promo_code,
+    p.country,
+    p.download_status,
+    p.amount,
+    p.download_url === AUTHORIZED_URL ? 1 : p.download_url || 0,
+  ]);
+  return JSON.stringify(tuples);
+}
 
 /**
  * 0. سكربت تضمين محرك البحث فقط (Standalone Self-Contained Widget — Pure JS)
  * يعمل على أي موقع بعيد بمجرد لصق السكربت فقط بدون الحاجة لأي HTML أو CSS إضافي.
  */
 export function buildSearchEmbedJsOnly(): string {
+  const compactData = serializeCompactPlayersTuples();
   return `/*!
  * سكربت تضمين محرك بحث سكربت التفاحة 1xBet وLinebet — العنكبوت للمعلومات
  * طريقة الاستخدام المباشر: الصق السكربت في أي مكان بالموقع وسيظهر محرك البحث تلقائياً.
@@ -23,30 +39,28 @@ export function buildSearchEmbedJsOnly(): string {
 (function () {
   'use strict';
 
-  var NAMES = ${JSON.stringify(ARABIC_NAMES)};
-  var COUNTRIES = ${JSON.stringify(ARABIC_COUNTRIES)};
-  var STATUSES = ${JSON.stringify(DOWNLOAD_STATUSES)};
   var PROMO = ${JSON.stringify(OFFICIAL_PROMO_CODE)};
   var CHANNEL = ${JSON.stringify(OFFICIAL_CHANNEL_NAME)};
   var DOWNLOAD_URL = ${JSON.stringify(AUTHORIZED_URL)};
 
-  // قاعدة بيانات الحسابات (250 سجل)
-  var ACCOUNTS_DB = [];
-  for (var i = 0; i < 250; i++) {
-    var st = STATUSES[i % STATUSES.length];
+  // قاعدة بيانات اللاعبين الحقيقية (${PLAYERS_DB.length} سجل)
+  var RAW_ROWS = ${compactData};
+  var ACCOUNTS_DB = RAW_ROWS.map(function (r) {
+    var st = r[5];
     var done = st === 'مكتمل';
-    ACCOUNTS_DB.push({
-      player_name: NAMES[i % NAMES.length] + '_عضو_' + String(i + 1).padStart(3, '0'),
-      account_id: String(1849203741 + i),
-      company: i % 2 === 0 ? '1xBet' : 'Linebet',
-      promo_code: PROMO,
-      country: COUNTRIES[i % COUNTRIES.length],
+    return {
+      player_name: r[0],
+      account_id: r[1],
+      company: r[2],
+      promo_code: r[3],
+      country: r[4],
       download_status: st,
+      amount: r[6],
       deposit_verified: done || st === 'جارٍ التحميل',
       announced_on_channel: done,
-      download_url: done ? DOWNLOAD_URL : ''
-    });
-  }
+      download_url: r[7] === 1 ? DOWNLOAD_URL : (r[7] || '')
+    };
+  });
 
   function searchAccount(accountId, platform) {
     var query = String(accountId || '').trim();
@@ -58,7 +72,7 @@ export function buildSearchEmbedJsOnly(): string {
       return (
         acc.account_id.indexOf(query) !== -1 ||
         acc.promo_code.toLowerCase().indexOf(normalized) !== -1 ||
-        acc.player_name.indexOf(query) !== -1 ||
+        acc.player_name.toLowerCase().indexOf(normalized) !== -1 ||
         acc.country.indexOf(query) !== -1
       );
     });
@@ -288,6 +302,7 @@ export function buildSearchEmbedJsOnly(): string {
                 '<ul class="sbw-meta">' +
                   '<li><span>المنصة والدولة</span><strong><span class="sbw-mono" dir="ltr">' + escapeHtml(acc.company) + '</span> · ' + escapeHtml(acc.country) + '</strong></li>' +
                   '<li><span>البروموكود</span><strong class="sbw-mono sbw-amber" dir="ltr">' + escapeHtml(acc.promo_code) + '</strong></li>' +
+                  '<li><span>قيمة الإيداع</span><strong class="sbw-mono" dir="ltr">' + escapeHtml(acc.amount) + '</strong></li>' +
                   '<li><span>الإيداع والتوثيق</span><strong class="' + (acc.deposit_verified ? 'sbw-ok' : '') + '">' + (acc.deposit_verified ? 'تم الإيداع والتوثيق' : 'بانتظار الإيداع') + '</strong></li>' +
                   '<li><span>الإعلان (' + escapeHtml(CHANNEL) + ')</span><strong class="' + (acc.announced_on_channel ? 'sbw-ok' : '') + '">' + (acc.announced_on_channel ? 'تم الإعلان' : 'لم يُعلن بعد') + '</strong></li>' +
                 '</ul>' +
@@ -791,32 +806,31 @@ export function buildArticleCssOnly(): string {
  * 3. السكربت لوحده (Pure JavaScript — No HTML, No CSS)
  */
 export function buildArticleJsOnly(): string {
+  const compactData = serializeCompactPlayersTuples();
   return `// 3) السكربت لوحده (JavaScript صافي مع دالة البحث searchAccount بدون HTML أو CSS)
 (function () {
-  const NAMES = ${JSON.stringify(ARABIC_NAMES)};
-  const COUNTRIES = ${JSON.stringify(ARABIC_COUNTRIES)};
-  const STATUSES = ${JSON.stringify(DOWNLOAD_STATUSES)};
   const PROMO = ${JSON.stringify(OFFICIAL_PROMO_CODE)};
   const CHANNEL = ${JSON.stringify(OFFICIAL_CHANNEL_NAME)};
   const DOWNLOAD_URL = ${JSON.stringify(AUTHORIZED_URL)};
 
-  // قاعدة بيانات الحسابات (250 سجل)
-  const ACCOUNTS_DB = [];
-  for (let i = 0; i < 250; i++) {
-    const status = STATUSES[i % STATUSES.length];
+  // قاعدة بيانات اللاعبين الحقيقية (${PLAYERS_DB.length} سجل)
+  const RAW_ROWS = ${compactData};
+  const ACCOUNTS_DB = RAW_ROWS.map(function (r) {
+    const status = r[5];
     const completed = status === 'مكتمل';
-    ACCOUNTS_DB.push({
-      player_name: NAMES[i % NAMES.length] + '_عضو_' + String(i + 1).padStart(3, '0'),
-      account_id: String(1849203741 + i),
-      company: i % 2 === 0 ? '1xBet' : 'Linebet',
-      promo_code: PROMO,
-      country: COUNTRIES[i % COUNTRIES.length],
+    return {
+      player_name: r[0],
+      account_id: r[1],
+      company: r[2],
+      promo_code: r[3],
+      country: r[4],
       download_status: status,
+      amount: r[6],
       deposit_verified: completed || status === 'جارٍ التحميل',
       announced_on_channel: completed,
-      download_url: completed ? DOWNLOAD_URL : ''
-    });
-  }
+      download_url: r[7] === 1 ? DOWNLOAD_URL : (r[7] || '')
+    };
+  });
 
   // دالة البحث المستقلة (1xBet أو Linebet فقط)
   function searchAccount(accountId, platform) {
@@ -830,7 +844,7 @@ export function buildArticleJsOnly(): string {
       return (
         acc.account_id.includes(query) ||
         acc.promo_code.toLowerCase().includes(normalized) ||
-        acc.player_name.includes(query) ||
+        acc.player_name.toLowerCase().includes(normalized) ||
         acc.country.includes(query)
       );
     });
@@ -872,7 +886,7 @@ export function buildArticleJsOnly(): string {
               '<div class="sb-card">' +
                 '<h4>' + acc.player_name + '</h4>' +
                 '<p class="sb-card-meta">ID: <span dir="ltr">' + acc.account_id + '</span> · ' + acc.company + ' · ' + acc.country + '</p>' +
-                '<p class="sb-card-meta">البروموكود: <strong dir="ltr">' + acc.promo_code + '</strong> · الحالة: ' + acc.download_status + '</p>' +
+                '<p class="sb-card-meta">البروموكود: <strong dir="ltr">' + acc.promo_code + '</strong> · الإيداع: <strong dir="ltr">' + acc.amount + '</strong> · الحالة: ' + acc.download_status + '</p>' +
                 '<p class="sb-card-meta">الإيداع والتوثيق: ' + (acc.deposit_verified ? 'تم الإيداع والتوثيق' : 'بانتظار الإيداع') + '</p>' +
                 '<p class="sb-card-meta">الإعلان (' + CHANNEL + '): ' + (acc.announced_on_channel ? 'تم الإعلان' : 'لم يُعلن بعد') + '</p>' +
                 (ok

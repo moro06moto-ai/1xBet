@@ -220,6 +220,13 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({
                     </div>
 
                     <div className="flex items-center justify-between py-2.5">
+                      <dt className="text-slate-400">قيمة الإيداع</dt>
+                      <dd className="font-mono font-semibold text-slate-100" dir="ltr">
+                        {player.amount}
+                      </dd>
+                    </div>
+
+                    <div className="flex items-center justify-between py-2.5">
                       <dt className="text-slate-400">الإيداع وتوثيق الحساب</dt>
                       <dd
                         className={`font-semibold ${

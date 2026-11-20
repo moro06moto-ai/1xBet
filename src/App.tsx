@@ -85,7 +85,7 @@ export default function App() {
         return (
           p.account_id.includes(trimmed) ||
           p.promo_code.toLowerCase().includes(normalized) ||
-          p.player_name.includes(trimmed) ||
+          p.player_name.toLowerCase().includes(normalized) ||
           p.country.includes(trimmed)
         );
       });
