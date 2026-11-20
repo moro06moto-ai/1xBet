@@ -79,6 +79,7 @@ function serializeCompactPlayersTuples(): string {
     p.download_status,
     p.amount,
     p.download_url === AUTHORIZED_URL ? 1 : p.download_url || 0,
+    p.verified_at || '2026-11-20',
   ]);
   return JSON.stringify(tuples);
 }
@@ -112,7 +113,7 @@ export function buildSearchEmbedJsOnly(): string {
   })};
   var REG_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>';
 
-  // قاعدة بيانات اللاعبين الحقيقية (${PLAYERS_DB.length} سجل)
+  // قاعدة بيانات اللاعبين الحقيقية (${PLAYERS_DB.length} سجل — أسماء مشفرة)
   var RAW_ROWS = ${compactData};
   var ACCOUNTS_DB = RAW_ROWS.map(function (r) {
     var st = r[5];
@@ -127,9 +128,48 @@ export function buildSearchEmbedJsOnly(): string {
       amount: r[6],
       deposit_verified: done || st === 'جارٍ التحميل',
       announced_on_channel: done,
-      download_url: r[7] === 1 ? DOWNLOAD_URL : (r[7] || '')
+      download_url: r[7] === 1 ? DOWNLOAD_URL : (r[7] || ''),
+      verified_at: r[8] || '2026-11-20'
     };
   });
+
+  // مزامنة صامتة اختيارية مع players.json على GitHub عند استخدام كود التحميل الصغير
+  (function syncRemoteIfConfigured() {
+    var cfg = window.__SPIDERBET_CONFIG__;
+    if (!cfg || !cfg.repo || !cfg.file) return;
+    var branch = cfg.branch || 'main';
+    var hasToken = cfg.token && cfg.token !== 'YOUR_GITHUB_TOKEN';
+    var url = hasToken
+      ? 'https://api.github.com/repos/' + cfg.repo + '/contents/' + cfg.file + '?ref=' + branch
+      : 'https://raw.githubusercontent.com/' + cfg.repo + '/' + branch + '/' + cfg.file;
+    var headers = hasToken
+      ? { Accept: 'application/vnd.github.raw+json', Authorization: 'Bearer ' + cfg.token }
+      : {};
+    fetch(url, { headers: headers })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        var list = Array.isArray(data) ? data : (data && Array.isArray(data.players) ? data.players : null);
+        if (!list || !list.length) return;
+        ACCOUNTS_DB = list.map(function (p) {
+          var st = p.download_status || '';
+          var done = st === 'مكتمل';
+          return {
+            player_name: maskName(p.player_name),
+            account_id: String(p.account_id || ''),
+            company: p.company === 'Linebet' ? 'Linebet' : '1xBet',
+            promo_code: String(p.promo_code || PROMO),
+            country: String(p.country || '—'),
+            download_status: st,
+            amount: String(p.amount || '—'),
+            deposit_verified: p.deposit_verified !== undefined ? Boolean(p.deposit_verified) : (done || st === 'جارٍ التحميل'),
+            announced_on_channel: p.announced_on_channel !== undefined ? Boolean(p.announced_on_channel) : done,
+            download_url: p.download_url || '',
+            verified_at: String(p.verified_at || '2026-11-20')
+          };
+        });
+      })
+      .catch(function () { /* الاعتماد بصمت على البيانات المدمجة بدون أي خطأ للزائر */ });
+  })();
 
   function searchAccount(accountId, platform) {
     var query = String(accountId || '').trim();
@@ -156,6 +196,14 @@ export function buildSearchEmbedJsOnly(): string {
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+  function maskName(str) {
+    var parts = String(str || '').trim().split(/\\s+/).filter(Boolean);
+    if (!parts.length) return '******';
+    return parts.map(function (w) {
+      return Array.from(w)[0] + '****';
+    }).join(' ');
   }
 
   function copyText(text, onDone) {
@@ -441,7 +489,7 @@ export function buildSearchEmbedJsOnly(): string {
               '<div>' +
                 '<div class="sbw-card-top">' +
                   '<div>' +
-                    '<h4 class="sbw-name">' + escapeHtml(acc.player_name) + '</h4>' +
+                    '<h4 class="sbw-name">' + escapeHtml(maskName(acc.player_name)) + '</h4>' +
                     '<div class="sbw-id-row">' +
                       '<span class="sbw-mono" dir="ltr">' + escapeHtml(acc.account_id) + '</span>' +
                       '<button type="button" class="sbw-mini-copy" data-copy-id="' + escapeHtml(acc.account_id) + '">نسخ</button>' +
@@ -455,6 +503,7 @@ export function buildSearchEmbedJsOnly(): string {
                   '<li><span>قيمة الإيداع</span><strong class="sbw-mono" dir="ltr">' + escapeHtml(acc.amount) + '</strong></li>' +
                   '<li><span>الإيداع والتوثيق</span><strong class="' + (acc.deposit_verified ? 'sbw-ok' : '') + '">' + (acc.deposit_verified ? 'تم الإيداع والتوثيق' : 'بانتظار الإيداع') + '</strong></li>' +
                   '<li><span>الإعلان (' + escapeHtml(CHANNEL) + ')</span><strong class="' + (acc.announced_on_channel ? 'sbw-ok' : '') + '">' + (acc.announced_on_channel ? 'تم الإعلان' : 'لم يُعلن بعد') + '</strong></li>' +
+                  '<li><span>تاريخ التحقق</span><strong class="sbw-mono" dir="ltr">' + escapeHtml(acc.verified_at || '2026-11-20') + '</strong></li>' +
                 '</ul>' +
               '</div>' +
               (isReady

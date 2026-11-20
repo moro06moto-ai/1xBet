@@ -98,11 +98,26 @@ export const KEYWORDS = [
 export const AUTHORIZED_URL =
   'https://www.information-net.com/1xbet-aviator-script-download/#authorized-resources';
 
+export function maskPlayerName(fullName: string): string {
+  const parts = String(fullName || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (parts.length === 0) return '******';
+  return parts
+    .map((part) => {
+      const firstChar = Array.from(part)[0] ?? '';
+      return `${firstChar}****`;
+    })
+    .join(' ');
+}
+
 export function generatePlayersDataset(): PlayerRecord[] {
   return RAW_PLAYERS_DATA.map((raw) => {
     const isCompleted = raw.download_status === 'مكتمل';
     return {
       ...raw,
+      player_name: maskPlayerName(raw.player_name),
       deposit_verified: isCompleted || raw.download_status === 'جارٍ التحميل',
       announced_on_channel: isCompleted,
     };
