@@ -184,12 +184,23 @@ export const SearchHero: React.FC<SearchHeroProps> = ({
               </div>
             )}
 
-            {/* Quick Separated Export Links: Article (HTML) · Design (CSS) · Script (JS) */}
+            {/* Quick Export Links: Embed Widget · Article (HTML) · Design (CSS) · Script (JS) */}
             <div className="flex flex-wrap items-center justify-center gap-4 border-t border-slate-800/80 pt-4 text-xs text-slate-400">
               <button
                 type="button"
+                onClick={() => onQuickExportPart('embed')}
+                className="inline-flex items-center gap-1.5 font-bold text-sky-400 transition-colors hover:text-sky-300 whitespace-nowrap cursor-pointer"
+              >
+                <Code2 className="h-3.5 w-3.5" />
+                <span>سكربت تضمين محرك البحث فقط</span>
+              </button>
+              <span className="text-slate-700" aria-hidden="true">
+                ·
+              </span>
+              <button
+                type="button"
                 onClick={() => onQuickExportPart('article')}
-                className="inline-flex items-center gap-1.5 font-semibold text-sky-400 transition-colors hover:text-sky-300 whitespace-nowrap cursor-pointer"
+                className="inline-flex items-center gap-1.5 font-semibold text-slate-300 transition-colors hover:text-white whitespace-nowrap cursor-pointer"
               >
                 <FileCode2 className="h-3.5 w-3.5" />
                 <span>المقال لوحده (HTML)</span>

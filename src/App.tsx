@@ -24,7 +24,7 @@ export default function App() {
   const [validationError, setValidationError] = useState<string | null>(null);
   const [hasActiveSearch, setHasActiveSearch] = useState(false);
   const [searchResults, setSearchResults] = useState<PlayerRecord[]>([]);
-  const [activeExportPart, setActiveExportPart] = useState<ExportPart>('article');
+  const [activeExportPart, setActiveExportPart] = useState<ExportPart>('embed');
 
   // Toast state
   const [toastMessage, setToastMessage] = useState<string | null>(null);

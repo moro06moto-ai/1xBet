@@ -1,6 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { Code2, Copy, Download, Eye, EyeOff, FolderDown } from 'lucide-react';
-import { ExportPart, getExportBundle } from '../utils/exportHtml';
+import {
+  ExportPart,
+  buildSearchEmbedJsOnly,
+  buildSearchEmbedScriptTag,
+  getExportBundle,
+} from '../utils/exportHtml';
 
 interface ShareHtmlSectionProps {
   activePart: ExportPart;
@@ -9,6 +14,11 @@ interface ShareHtmlSectionProps {
 }
 
 const EXPORT_TABS: { id: ExportPart; label: string; hint: string }[] = [
+  {
+    id: 'embed',
+    label: 'تضمين محرك البحث فقط (سكربت)',
+    hint: 'سكربت واحد مستقل لمحرك البحث فقط (بدون المقال أو أي CSS إضافي) — انسخه وأرسله لأي موقع بعيد، وسيعمل فورًا في نفس موضع اللصق بتصميم معزول تمامًا عبر Shadow DOM.',
+  },
   {
     id: 'article',
     label: '1. المقال لوحده (HTML)',
@@ -32,13 +42,23 @@ export const ShareHtmlSection: React.FC<ShareHtmlSectionProps> = ({
   onNotify,
 }) => {
   const [showCode, setShowCode] = useState(true);
+  const [embedFormat, setEmbedFormat] = useState<'tag' | 'raw'>('tag');
 
   const bundle = useMemo(() => getExportBundle(activePart), [activePart]);
   const activeTabMeta = EXPORT_TABS.find((t) => t.id === activePart) ?? EXPORT_TABS[0];
 
+  const displayedCode = useMemo(() => {
+    if (activePart === 'embed') {
+      return embedFormat === 'tag'
+        ? buildSearchEmbedScriptTag()
+        : buildSearchEmbedJsOnly();
+    }
+    return bundle.code;
+  }, [activePart, embedFormat, bundle.code]);
+
   const triggerDownload = (part: ExportPart) => {
     const item = getExportBundle(part);
-    const blob = new Blob([item.code], { type: item.mimeType });
+    const blob = new Blob([item.downloadContent], { type: item.mimeType });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -63,8 +83,14 @@ export const ShareHtmlSection: React.FC<ShareHtmlSectionProps> = ({
 
   const handleCopyActive = async () => {
     try {
-      await navigator.clipboard.writeText(bundle.code);
-      onNotify(`تم نسخ ${bundle.label} إلى الحافظة`);
+      await navigator.clipboard.writeText(displayedCode);
+      const suffix =
+        activePart === 'embed'
+          ? embedFormat === 'tag'
+            ? ' (<script> جاهز للصق)'
+            : ' (ملف JS صافي)'
+          : '';
+      onNotify(`تم نسخ ${bundle.label}${suffix} إلى الحافظة`);
     } catch {
       setShowCode(true);
       onNotify('تعذر النسخ التلقائي — يمكنك تحديد الكود أدناه ونسخه');
@@ -79,10 +105,12 @@ export const ShareHtmlSection: React.FC<ShareHtmlSectionProps> = ({
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
         <div className="space-y-1.5 max-w-2xl">
           <p className="text-xs font-semibold text-sky-400">
-            تصدير مفصول ومنظم · المقال لوحده · التصميم لوحده · السكربت لوحده
+            تصدير وتضمين مرن · سكربت محرك البحث المستقل للمواقع البعيدة
           </p>
           <h2 className="text-xl sm:text-2xl font-extrabold text-white">
-            المقال والتصميم والسكربت منفصلين بالكامل
+            {activePart === 'embed'
+              ? 'سكربت تضمين محرك البحث فقط لأي موقع بعيد'
+              : 'المقال والتصميم والسكربت منفصلين بالكامل'}
           </h2>
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
             {activeTabMeta.hint}
@@ -96,7 +124,13 @@ export const ShareHtmlSection: React.FC<ShareHtmlSectionProps> = ({
             className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-sky-600 px-5 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-sky-500 whitespace-nowrap shrink-0 cursor-pointer"
           >
             <Copy className="h-4 w-4" />
-            <span>نسخ {bundle.label}</span>
+            <span>
+              {activePart === 'embed'
+                ? embedFormat === 'tag'
+                  ? 'نسخ السكربت (<script>)'
+                  : 'نسخ كود JS الصافي'
+                : `نسخ ${bundle.label}`}
+            </span>
           </button>
 
           <button
@@ -105,25 +139,29 @@ export const ShareHtmlSection: React.FC<ShareHtmlSectionProps> = ({
             className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-700 bg-[#0b1120] px-4 text-xs sm:text-sm font-bold text-slate-200 transition-colors hover:border-sky-500 hover:text-white whitespace-nowrap shrink-0 cursor-pointer"
           >
             <Download className="h-4 w-4 text-sky-400" />
-            <span>تحميل الملف</span>
+            <span>
+              {activePart === 'embed' ? 'تحميل ملف .js' : 'تحميل الملف'}
+            </span>
           </button>
 
-          <button
-            type="button"
-            onClick={handleDownloadAllThree}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-700 bg-[#0b1120] px-4 text-xs sm:text-sm font-semibold text-slate-300 transition-colors hover:border-emerald-500 hover:text-white whitespace-nowrap shrink-0 cursor-pointer"
-          >
-            <FolderDown className="h-4 w-4 text-emerald-400" />
-            <span>تحميل الـ 3 ملفات</span>
-          </button>
+          {activePart !== 'embed' && (
+            <button
+              type="button"
+              onClick={handleDownloadAllThree}
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-700 bg-[#0b1120] px-4 text-xs sm:text-sm font-semibold text-slate-300 transition-colors hover:border-emerald-500 hover:text-white whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              <FolderDown className="h-4 w-4 text-emerald-400" />
+              <span>تحميل الـ 3 ملفات</span>
+            </button>
+          )}
         </div>
       </div>
 
-      {/* 3-Part Segmented Tabs: Article (HTML) / Design (CSS) / Script (JS) */}
+      {/* Tabs: Standalone Search Embed + Separated Article / CSS / JS */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 pt-4 text-xs">
         <div
           role="tablist"
-          aria-label="الأقسام المفصولة"
+          aria-label="خيارات التصدير والتضمين"
           className="inline-flex flex-wrap items-center gap-1 rounded-lg border border-slate-800 bg-[#0b1120] p-1"
         >
           {EXPORT_TABS.map((tab) => {
@@ -156,7 +194,7 @@ export const ShareHtmlSection: React.FC<ShareHtmlSectionProps> = ({
             <span>{bundle.fileName}</span>
             <span className="text-slate-600">·</span>
             <span className="tabular-nums">
-              {Math.max(1, Math.ceil(bundle.code.length / 1024))} KB
+              {Math.max(1, Math.ceil(displayedCode.length / 1024))} KB
             </span>
           </span>
 
@@ -180,10 +218,58 @@ export const ShareHtmlSection: React.FC<ShareHtmlSectionProps> = ({
         </div>
       </div>
 
+      {/* Embed-specific format selector & remote-site usage guide */}
+      {activePart === 'embed' && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-slate-800 bg-[#0b1120] px-4 py-3 text-xs">
+          <div className="space-y-1 text-slate-300">
+            <p className="font-bold text-white">
+              طريقة التضمين في الموقع البعيد (سكربت فقط بدون HTML أو CSS):
+            </p>
+            <p className="text-slate-400 leading-relaxed">
+              الصق كود <code className="font-mono text-sky-400" dir="ltr">&lt;script&gt;...&lt;/script&gt;</code> مباشرة في الموضع المطلوب (بلوجر، ووردبريس، أو أي صفحة HTML)، أو ارفع ملف{' '}
+              <code className="font-mono text-sky-400" dir="ltr">spiderbet-search-embed.js</code> واستدعه بـ{' '}
+              <code className="font-mono text-amber-300" dir="ltr">
+                &lt;script src="spiderbet-search-embed.js"&gt;&lt;/script&gt;
+              </code>
+              .
+            </p>
+          </div>
+
+          <div
+            role="group"
+            aria-label="صيغة سكربت التضمين"
+            className="inline-flex items-center gap-1 rounded-lg border border-slate-800 bg-[#111827] p-1 shrink-0 self-start sm:self-center"
+          >
+            <button
+              type="button"
+              onClick={() => setEmbedFormat('tag')}
+              className={`rounded-md px-3 py-1.5 font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+                embedFormat === 'tag'
+                  ? 'bg-sky-600 text-white'
+                  : 'text-slate-400 hover:text-slate-100'
+              }`}
+            >
+              كود &lt;script&gt; جاهز
+            </button>
+            <button
+              type="button"
+              onClick={() => setEmbedFormat('raw')}
+              className={`rounded-md px-3 py-1.5 font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+                embedFormat === 'raw'
+                  ? 'bg-sky-600 text-white'
+                  : 'text-slate-400 hover:text-slate-100'
+              }`}
+            >
+              ملف JS صافي
+            </button>
+          </div>
+        </div>
+      )}
+
       {showCode && (
         <textarea
           readOnly
-          value={bundle.code}
+          value={displayedCode}
           dir="ltr"
           aria-label={bundle.label}
           onFocus={(e) => e.currentTarget.select()}
