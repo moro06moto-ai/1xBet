@@ -36,10 +36,17 @@ export function buildRepoPlayersJson(): string {
  * كود التضمين الصغير للمواقع الخارجية (يدعم المستودع الخاص عبر GitHub API + Token والمستودع العام بدون Token)
  */
 export function buildSearchEmbedOneLineTag(): string {
-  return `<!-- كود تضمين نظام البحث والنتيجة فقط (يدعم المستودع الخاص والعام) -->
-<div id="spiderbet-search-widget"></div>
+  return `<div id="spiderbet-search-widget"></div>
 <script>
 (function () {
+  var cur = document.currentScript;
+  var box = document.getElementById("spiderbet-search-widget");
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "spiderbet-search-widget";
+    if (cur && cur.parentNode) { cur.parentNode.insertBefore(box, cur); }
+    else if (document.body) { document.body.appendChild(box); }
+  }
   var cfg = {
     repo: "${DEFAULT_GITHUB_REPO_SLUG}",
     branch: "${DEFAULT_GITHUB_BRANCH}",
@@ -56,11 +63,26 @@ export function buildSearchEmbedOneLineTag(): string {
     ? { "Accept": "application/vnd.github.raw+json", "Authorization": "Bearer " + cfg.token }
     : {};
   fetch(url, { headers: headers })
-    .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
-    .then(function (code) { (new Function(code))(); })
+    .then(function (r) { if (!r.ok) { throw new Error("HTTP " + r.status); } return r.text(); })
+    .then(function (txt) {
+      var code = txt;
+      if (txt && txt.charAt(0) === "{") {
+        try {
+          var j = JSON.parse(txt);
+          if (j && j.content && j.encoding === "base64") {
+            var bin = atob(j.content.replace(/\\s/g, ""));
+            var bytes = new Uint8Array(bin.length);
+            for (var i = 0; i < bin.length; i++) { bytes[i] = bin.charCodeAt(i); }
+            code = new TextDecoder("utf-8").decode(bytes);
+          }
+        } catch (e) {}
+      }
+      var s = document.createElement("script");
+      s.textContent = code;
+      (document.head || document.body).appendChild(s);
+    })
     .catch(function () {
-      var el = document.getElementById("spiderbet-search-widget");
-      if (el) el.innerHTML = '<div dir="rtl" style="padding:18px;border-radius:14px;background:#111827;border:1px solid #1e293b;color:#f1f5f9;font-family:Cairo,system-ui,sans-serif;text-align:right"><h4 style="margin:0 0 8px;font-size:15px">متطلبات التحميل المجاني</h4><ul style="margin:0 0 14px;padding-right:18px;font-size:13px;color:#cbd5e1;line-height:1.8"><li>إنشاء حساب جديد عبر بروموكود <strong dir="ltr" style="color:#fcd34d">${OFFICIAL_PROMO_CODE}</strong></li><li>إتمام الإيداع وتوثيق الحساب بالكامل</li><li>الإعلان عن الحساب على <strong>${OFFICIAL_CHANNEL_NAME}</strong></li></ul><a href="${SITE_REGISTRATION_URL}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;background:#059669;color:#fff;text-decoration:none;font-size:13px;font-weight:700">التسجيل والاشتراك عبر الموقع</a></div>';
+      box.innerHTML = '<div dir="rtl" style="padding:18px;border-radius:14px;background:#111827;border:1px solid #1e293b;color:#f1f5f9;font-family:Cairo,system-ui,sans-serif;text-align:right"><h4 style="margin:0 0 8px;font-size:15px">متطلبات التحميل المجاني</h4><ul style="margin:0 0 14px;padding-right:18px;font-size:13px;color:#cbd5e1;line-height:1.8"><li>إنشاء حساب جديد عبر بروموكود <strong dir="ltr" style="color:#fcd34d">${OFFICIAL_PROMO_CODE}</strong></li><li>إتمام الإيداع وتوثيق الحساب بالكامل</li><li>الإعلان عن الحساب على <strong>${OFFICIAL_CHANNEL_NAME}</strong></li></ul><a href="${SITE_REGISTRATION_URL}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;background:#059669;color:#fff;text-decoration:none;font-size:13px;font-weight:700">التسجيل والاشتراك عبر الموقع</a></div>';
     });
 })();
 </script>`;
@@ -113,7 +135,7 @@ export function buildSearchEmbedJsOnly(): string {
   })};
   var REG_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>';
 
-  // قاعدة بيانات اللاعبين الحقيقية (${PLAYERS_DB.length} سجل — أسماء مشفرة)
+  /* قاعدة بيانات اللاعبين الحقيقية (${PLAYERS_DB.length} سجل — أسماء مشفرة) */
   var RAW_ROWS = ${compactData};
   var ACCOUNTS_DB = RAW_ROWS.map(function (r) {
     var st = r[5];
@@ -133,7 +155,7 @@ export function buildSearchEmbedJsOnly(): string {
     };
   });
 
-  // مزامنة صامتة اختيارية مع players.json على GitHub عند استخدام كود التحميل الصغير
+  /* مزامنة صامتة اختيارية مع players.json على GitHub عند استخدام كود التحميل الصغير */
   (function syncRemoteIfConfigured() {
     var cfg = window.__SPIDERBET_CONFIG__;
     if (!cfg || !cfg.repo || !cfg.file) return;
@@ -552,7 +574,7 @@ export function buildSearchEmbedJsOnly(): string {
     });
   }
 
-  // تحديد موضع التضمين تلقائياً في الموقع البعيد
+  /* تحديد موضع التضمين تلقائياً في الموقع البعيد */
   var currentScript = document.currentScript;
 
   function init() {
